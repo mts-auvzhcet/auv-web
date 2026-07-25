@@ -48,11 +48,22 @@ export default function MembersManager() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const submit = (e) => {
+  const [saveError, setSaveError] = useState("");
+
+  const submit = async (e) => {
     e.preventDefault();
-    if (editingId) updateMember(active, editingId, form, user);
-    else addMember(active, form, user);
-    reset();
+    setSaveError("");
+    try {
+      if (editingId) await updateMember(active, editingId, form, user);
+      else await addMember(active, form, user);
+      reset();
+    } catch (err) {
+      setSaveError(
+        err.status === 413
+          ? "That photo is too large to upload. Try a smaller image (under ~7MB)."
+          : err.message || "Save failed. Please try again.",
+      );
+    }
   };
 
   const remove = (id) => {
@@ -99,6 +110,12 @@ export default function MembersManager() {
           <Plus size={14} /> New Session
         </button>
       </div>
+       
+       {saveError && (
+        <div className="mb-4 bg-red-500/10 border border-red-500/30 text-red-300 text-xs rounded-xl p-3">
+          {saveError}
+        </div>
+      )}
 
       <FormCard
         title={`Member (${active})`}

@@ -43,14 +43,22 @@ export default function CollectionManager({ config }) {
     setEditingId(null);
   };
 
-  const submit = (e) => {
+  const [saveError, setSaveError] = useState("");
+
+  const submit = async (e) => {
     e.preventDefault();
-    if (editingId) {
-      updateItem(config.name, editingId, form, user);
-    } else {
-      addItem(config.name, form, user);
+    setSaveError("");
+    try {
+      if (editingId) await updateItem(config.name, editingId, form, user);
+      else await addItem(config.name, form, user);
+      reset();
+    } catch (err) {
+      setSaveError(
+        err.status === 413
+          ? "One of these images is too large to upload. Try smaller images (under ~7MB total)."
+          : err.message || "Save failed. Please try again.",
+      );
     }
-    reset();
   };
 
   const remove = (id) => {
@@ -62,6 +70,12 @@ export default function CollectionManager({ config }) {
 
   return (
     <div>
+      {saveError && (
+        <div className="mb-4 bg-red-500/10 border border-red-500/30 text-red-300 text-xs rounded-xl p-3">
+          {saveError}
+        </div>
+      )}
+
       <FormCard title={config.label} onSubmit={submit} editing={!!editingId} onCancel={reset}>
         {config.fields.map((f) => (
           <div key={f.key} className={f.textarea || f.type === "files" ? "sm:col-span-2" : ""}>

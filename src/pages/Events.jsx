@@ -85,10 +85,10 @@ export default function Events() {
       : (e.highlights || '').split('\n').filter(Boolean),
     winningTeams: e.winningTeams || '',
     reportLink: e.reportLink || '#',
-    images: e.imageBase64
-      ? [e.imageBase64]
-      : Array.isArray(e.images)
+    images: Array.isArray(e.images) && e.images.length > 0
       ? e.images
+      : e.imageBase64
+      ? [e.imageBase64]
       : (e.images || e.imageUrl || '').split(',').map((s) => s.trim()).filter(Boolean),
       createdAt: e.createdAt,
   }));
