@@ -66,7 +66,7 @@ export default function Navbar() {
           target="_blank"
           rel="noopener noreferrer"
           className="text-[#ffffffcc] flex items-center font-apple hover:text-white hover:scale-105 transition-all duration-300 whitespace-nowrap"
-          href="https://amurov.co.in/"
+          href="https://rovcsite.onrender.com"
         >
           AMU ROVc
         </a>
@@ -156,7 +156,7 @@ export default function Navbar() {
           <a
             target="_blank"
             rel="noopener noreferrer"
-            href="https://amurov.co.in/"
+            href="https://rovcsite.onrender.com"
             onClick={() => setIsOpen(false)}
             className="text-zinc-400 hover:text-white w-1/2 text-center text-base transition-colors"
           >
