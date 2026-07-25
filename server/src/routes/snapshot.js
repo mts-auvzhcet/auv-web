@@ -9,10 +9,18 @@ const r = Router();
  * Auth-gated data (users list, audit) is fetched separately by developers.
  */
 r.get("/", optionalAuth, async (_req, res) => {
-  const [sessions, members, items, info] = await Promise.all([
+  const [sessions, members, events, vehicles, projects, items, info] = await Promise.all([
     q("SELECT name, is_active, sort_order FROM member_sessions ORDER BY sort_order DESC"),
     q("SELECT id, session_name, data FROM members ORDER BY created_at ASC"),
-    q("SELECT id, collection, data, created_at FROM items ORDER BY created_at ASC"),
+    q("SELECT id, data, created_at FROM events ORDER BY created_at ASC"),
+    q("SELECT id, data, created_at FROM vehicles ORDER BY created_at ASC"),
+    q("SELECT id, data, created_at FROM projects ORDER BY created_at ASC"),
+    // events/vehicles/projects now live in their own dedicated tables above —
+    // this only covers the remaining shared collections (announcements,
+    // recruitments, advisory, forms).
+    q(
+      "SELECT id, collection, data, created_at FROM items WHERE collection NOT IN ('events','vehicles','projects') ORDER BY created_at ASC",
+    ),
     q("SELECT value FROM settings WHERE key='info_md'"),
   ]);
 
@@ -23,6 +31,9 @@ r.get("/", optionalAuth, async (_req, res) => {
   }
 
   const byCollection = { events: [], projects: [], vehicles: [], announcements: [], recruitments: [], advisory: [], forms: [] };
+  for (const e of events.rows) byCollection.events.push({ id: e.id, ...(e.data || {}) });
+  for (const v of vehicles.rows) byCollection.vehicles.push({ id: v.id, ...(v.data || {}) });
+  for (const p of projects.rows) byCollection.projects.push({ id: p.id, ...(p.data || {}) });
   for (const it of items.rows) {
     (byCollection[it.collection] ||= []).push({ id: it.id, ...(it.data || {}) });
   }

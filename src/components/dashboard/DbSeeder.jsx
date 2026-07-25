@@ -275,14 +275,24 @@ export default function DbSeeder() {
   };
 
   // Compares a hardcoded entry against an existing DB row, ignoring
-  // fields the DB adds itself (id, createdAt, updatedAt) — so unrelated
-  // metadata never triggers a false "changed" update.
+  // fields the DB adds itself (id, createdAt, updatedAt). Also sorts
+  // object keys recursively before comparing — Postgres JSONB does NOT
+  // preserve original key insertion order, so a plain JSON.stringify
+  // comparison would falsely report "changed" on identical data purely
+  // because the key order differs after a round-trip through the DB.
+  const stableStringify = (obj) => {
+    if (obj === null || typeof obj !== "object") return JSON.stringify(obj);
+    if (Array.isArray(obj)) return `[${obj.map(stableStringify).join(",")}]`;
+    const keys = Object.keys(obj).sort();
+    return `{${keys.map((k) => `${JSON.stringify(k)}:${stableStringify(obj[k])}`).join(",")}}`;
+  };
+
   const isSame = (hardcoded, existing) => {
     const strip = (obj) => {
       const { id, createdAt, updatedAt, ...rest } = obj;
       return rest;
     };
-    return JSON.stringify(strip(hardcoded)) === JSON.stringify(strip(existing));
+    return stableStringify(strip(hardcoded)) === stableStringify(strip(existing));
   };
 
   // Upserts a list of hardcoded items against an existing collection,
@@ -406,14 +416,19 @@ export default function DbSeeder() {
       )}
 
       <div className="bg-zinc-950/80 border border-zinc-900 rounded-2xl p-6">
-        <h3 className="text-xs font-bold text-zinc-400 font-space uppercase tracking-wider mb-4">What will be seeded:</h3>
+        <h3 className="text-xs font-bold text-zinc-400 font-space uppercase tracking-wider mb-4">Currently in the database:</h3>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
           {[
-            { label: "Vehicles", count: "5", desc: "SEA 1.0 through SEA 5.0", icon: "🤿" },
-            { label: "Advisory Board", count: "3", desc: "Prof. Naima Khatoon + 2 more", icon: "🎓" },
-            { label: "Projects", count: "2", desc: "AutoBase 1.0 + Custom 3D Printer", icon: "🚀" },
-            { label: "Events", count: "3", desc: "AMU ROVc, Science Fair, SAUVc", icon: "🏆" },
-            { label: "Members", count: "43", desc: "Across 2026-27, 2025-26, Alumni", icon: "👥" },
+            { label: "Vehicles", count: getCollection("vehicles").length, desc: "Live count from Neon", icon: "🤿" },
+            { label: "Advisory Board", count: getCollection("advisory").length, desc: "Live count from Neon", icon: "🎓" },
+            { label: "Projects", count: getCollection("projects").length, desc: "Live count from Neon", icon: "🚀" },
+            { label: "Events", count: getCollection("events").length, desc: "Live count from Neon", icon: "🏆" },
+            {
+              label: "Members",
+              count: ["2026-27", "2025-26", "Alumni"].reduce((sum, s) => sum + getMembers(s).length, 0),
+              desc: "Live count from Neon",
+              icon: "👥",
+            },
           ].map((item) => (
             <div key={item.label} className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-4">
               <div className="text-2xl mb-2">{item.icon}</div>

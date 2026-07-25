@@ -24,7 +24,28 @@ CREATE TABLE IF NOT EXISTS members (
 );
 CREATE INDEX IF NOT EXISTS members_session_idx ON members(session_name);
 
--- Generic content collections: events, projects, vehicles, announcements, recruitments
+-- Events, Vehicles, Projects — each has its own dedicated table (same
+-- pattern as `members`) instead of sharing the generic `items` table.
+CREATE TABLE IF NOT EXISTS events (
+  id           TEXT PRIMARY KEY,
+  data         JSONB NOT NULL,
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS vehicles (
+  id           TEXT PRIMARY KEY,
+  data         JSONB NOT NULL,
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS projects (
+  id           TEXT PRIMARY KEY,
+  data         JSONB NOT NULL,
+  created_at   TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Generic content collections that still share one table: announcements,
+-- recruitments, advisory, forms.
 CREATE TABLE IF NOT EXISTS items (
   id           TEXT PRIMARY KEY,
   collection   TEXT NOT NULL,
