@@ -90,8 +90,17 @@ export default function Events() {
       : Array.isArray(e.images)
       ? e.images
       : (e.images || e.imageUrl || '').split(',').map((s) => s.trim()).filter(Boolean),
+      createdAt: e.createdAt,
   }));
-  const events = storeEvents;
+  const events = [...storeEvents].sort((a, b) => {
+    const yearA = parseInt(a.year, 10);
+    const yearB = parseInt(b.year, 10);
+    const validA = !isNaN(yearA);
+    const validB = !isNaN(yearB);
+    if (validA && validB && yearA !== yearB) return yearB - yearA;
+    if (validA !== validB) return validA ? -1 : 1;
+    return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+  });
 
 
 
