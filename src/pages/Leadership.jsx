@@ -293,7 +293,7 @@ export default function Leadership() {
                     <img
                       alt={stud.name}
                       src={stud.img}
-                      className="object-cover w-full h-full grayscale group-hover:grayscale-0 transition-all duration-500 filter brightness-95"
+                      className="object-cover w-full h-full transition-all duration-500 filter brightness-95"
                     />
                   </div>
                   <div className="text-center w-full flex-grow flex flex-col justify-end">
