@@ -211,7 +211,7 @@ export default function Leadership() {
               <div className="overflow-hidden rounded-2xl border border-zinc-800 shadow-lg aspect-square w-48 mb-4 hover:border-zinc-700 transition-all duration-300">
                 <img
                   alt={facultyCouncilor.name}
-                  className="object-cover w-full h-full grayscale hover:grayscale-0 transition-all duration-500 ease-out"
+                  className="object-cover w-full h-full transition-all duration-500 ease-out"
                   src={facultyCouncilor.img}
                 />
               </div>
@@ -235,7 +235,7 @@ export default function Leadership() {
                   <div className="overflow-hidden rounded-xl border border-zinc-850 shadow-md aspect-square w-28 sm:w-32 mb-3 hover:border-zinc-700 transition-all duration-300">
                     <img
                       alt={adv.name}
-                      className="object-cover w-full h-full grayscale hover:grayscale-0 transition-all duration-500"
+                      className="object-cover w-full h-full transition-all duration-500"
                       src={adv.img}
                     />
                   </div>
@@ -367,7 +367,7 @@ export default function Leadership() {
             {supporters.map((item, idx) => (
               <div key={idx} className="group rounded-3xl bg-zinc-950/40 border border-zinc-900 hover:border-sky-500/20 transition-all duration-350 overflow-hidden flex flex-col justify-between backdrop-blur-sm">
                 <div className="p-8 h-40 flex items-center justify-center bg-zinc-900/10">
-                  <img alt={item.name} loading="lazy" className="max-h-full max-w-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-500" src={item.img} />
+                  <img alt={item.name} loading="lazy" className="max-h-full max-w-full object-contain transition-all duration-500" src={item.img} />
                 </div>
                 <div className="py-4 px-6 text-center border-t border-zinc-900/60 bg-zinc-950/85">
                   <span className="text-[9px] font-space text-cyan-400 tracking-widest uppercase font-bold">{item.type}</span>
@@ -387,7 +387,7 @@ export default function Leadership() {
             {sponsors.map((item, idx) => (
               <div key={idx} className="group rounded-2xl bg-zinc-950/40 border border-zinc-900 hover:border-sky-500/20 transition-all duration-350 overflow-hidden flex flex-col justify-between backdrop-blur-sm">
                 <div className="p-6 h-32 flex items-center justify-center bg-zinc-900/10">
-                  <img alt={item.name} loading="lazy" className="max-h-full max-w-full object-contain filter grayscale group-hover:grayscale-0 transition-all duration-500" src={item.img} />
+                  <img alt={item.name} loading="lazy" className="max-h-full max-w-full object-contain transition-all duration-500" src={item.img} />
                 </div>
                 <div className="py-3 px-4 text-center border-t border-zinc-900/60 bg-zinc-950/85">
                   <span className="text-[8px] font-space text-cyan-400 tracking-wider uppercase font-bold block">{item.type}</span>
