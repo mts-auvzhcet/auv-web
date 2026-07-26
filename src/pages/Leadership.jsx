@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getMembers, getDB } from '../lib/store';
+import { getMembers, getDB, isHydrated } from '../lib/store';
 import { useStore } from '../lib/useStore';
 
 // Map a store member record (name, designation, imageUrl, branch, oneLiner)
@@ -173,6 +173,7 @@ export default function Leadership() {
     // After seeding, DB will have all data — use it exclusively.
     // Only fall back to hardcoded if the session is completely empty in DB.
     if (fromStore.length > 0) return sortedFromStore;
+    if (!isHydrated()) return null; // still loading — don't show stale hardcoded data yet
 
     const fallback =
       activeSession === '2026-27' ? team2026_27 :
@@ -282,6 +283,12 @@ export default function Leadership() {
         </div>
 
         {/* 3. 3D FLIP CARD GRID */}
+        {getActiveTeamList() === null ? (
+          <div className="flex flex-col items-center justify-center gap-3 py-20">
+            <div className="w-8 h-8 border-2 border-sky-500/30 border-t-sky-400 rounded-full animate-spin" />
+            <span className="text-xs text-zinc-500 font-space uppercase tracking-wider">Loading team...</span>
+          </div>
+        ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 justify-center">
           {getActiveTeamList().map((stud, idx) => (
             <div key={idx} className="flip-card w-full aspect-[0.72] max-w-[210px] mx-auto group">
@@ -343,6 +350,7 @@ export default function Leadership() {
             </div>
           ))}
         </div>
+        )}
 
       {/* 4. SPONSORS & BENEFACTORS */}
       <div className="max-w-7xl mx-auto mt-32 mb-10">

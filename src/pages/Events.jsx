@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, Eye, FileText, ChevronLeft, ChevronRight, X, Award, MapPin, Sparkles } from 'lucide-react';
-import { getCollection } from '../lib/store';
+import { getCollection, isHydrated } from '../lib/store';
 import { useStore } from '../lib/useStore';
 
 export default function Events() {
@@ -90,15 +90,16 @@ export default function Events() {
       : e.imageBase64
       ? [e.imageBase64]
       : (e.images || e.imageUrl || '').split(',').map((s) => s.trim()).filter(Boolean),
-      createdAt: e.createdAt,
+    createdAt: e.createdAt,
   }));
   const events = [...storeEvents].sort((a, b) => {
     const yearA = parseInt(a.year, 10);
     const yearB = parseInt(b.year, 10);
     const validA = !isNaN(yearA);
     const validB = !isNaN(yearB);
-    if (validA && validB && yearA !== yearB) return yearB - yearA;
-    if (validA !== validB) return validA ? -1 : 1;
+    if (validA && validB && yearA !== yearB) return yearB - yearA; // newest year first
+    if (validA !== validB) return validA ? -1 : 1; // events with a year beat ones without
+    // Same year (or both missing one) — fall back to most-recently-added first.
     return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
   });
 
@@ -118,6 +119,17 @@ export default function Events() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [lightboxIndex, activeGallery]);
+
+  if (!isHydrated()) {
+    return (
+      <div className="bg-gradient-to-b from-[#0f172a] via-[#18181b] to-[#111827] text-white min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-8 h-8 border-2 border-sky-500/30 border-t-sky-400 rounded-full animate-spin" />
+          <span className="text-xs text-zinc-500 font-space uppercase tracking-wider">Loading events...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gradient-to-b from-[#0f172a] via-[#18181b] to-[#111827] text-white pt-24 pb-20 min-h-screen font-poppins relative selection:bg-blue-500/30">

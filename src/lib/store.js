@@ -56,6 +56,10 @@ export function getDB() {
   return cache;
 }
 
+export function isHydrated() {
+  return hydrated;
+}
+
 // ---------------------------------------------------------------------------
 // Hydration — called once at app boot
 // ---------------------------------------------------------------------------

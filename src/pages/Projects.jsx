@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, Users, Cpu, ShieldCheck, ArrowRight, X } from 'lucide-react';
-import { getCollection } from '../lib/store';
+import { getCollection, isHydrated } from '../lib/store';
 import { useStore } from '../lib/useStore';
 
 export default function Projects() {
@@ -76,7 +76,16 @@ export default function Projects() {
   }));
   const projects = storeProjects;
 
-
+  if (!isHydrated()) {
+    return (
+      <div className="bg-gradient-to-b from-[#0284c7] via-[#0c4a6e] to-[#0f172a] text-white min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-8 h-8 border-2 border-sky-200/30 border-t-white rounded-full animate-spin" />
+          <span className="text-xs text-sky-100/70 font-space uppercase tracking-wider">Loading projects...</span>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-gradient-to-b from-[#0284c7] via-[#0c4a6e] to-[#0f172a] text-white pt-24 pb-20 min-h-screen font-poppins relative selection:bg-blue-500/30">
