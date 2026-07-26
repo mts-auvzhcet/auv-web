@@ -48,6 +48,7 @@ export const vehiclesConfig = {
     { key: "name", label: "Name", required: true },
     { key: "tagline", label: "Tagline" },
     { key: "imageBase64", label: "Vehicle Image", type: "file" },
+    { key: "videoUrl", label: "Animation Video URL (optional — shown instead of the image if set)" },
     { key: "thrusters", label: "Thrusters" },
     { key: "dof", label: "Degrees of Freedom" },
     { key: "depth", label: "Max Depth" },

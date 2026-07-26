@@ -219,6 +219,7 @@ export default function Home() {
     name: v.name || 'Unnamed',
     tagline: v.tagline || '',
     img: v.img || v.imageUrl || v.imageBase64 || '',
+    videourl: v.videourl || '',
     desc: v.desc || v.description || '',
     specs: {
       thrusters: v.thrusters || '', dof: v.dof || '', depth: v.depth || '',
@@ -439,11 +440,22 @@ export default function Home() {
                     {/* Slow floating translation */}
                     <div className="animate-[bounce_6s_ease-in-out_infinite] relative">
                       <div className="absolute inset-0 bg-sky-500/20 blur-3xl rounded-full scale-75" />
-                      <img
-                        src={currentVehicle.img}
-                        alt={currentVehicle.name}
-                        className="max-h-[240px] object-contain relative filter drop-shadow-[0_15px_35px_rgba(56,189,248,0.25)]"
-                      />
+                      {currentVehicle.videoUrl ? (
+                        <video
+                          src={currentVehicle.videoUrl}
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          className="max-h-[240px] object-contain relative filter drop-shadow-[0_15px_35px_rgba(56,189,248,0.25)]"
+                        />
+                      ) : (
+                        <img
+                          src={currentVehicle.img}
+                          alt={currentVehicle.name}
+                          className="max-h-[240px] object-contain relative filter drop-shadow-[0_15px_35px_rgba(56,189,248,0.25)]"
+                        />
+                      )}
                     </div>
                   </motion.div>
                 </AnimatePresence>
