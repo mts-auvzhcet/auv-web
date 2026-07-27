@@ -219,7 +219,7 @@ export default function Home() {
     name: v.name || 'Unnamed',
     tagline: v.tagline || '',
     img: v.img || v.imageUrl || v.imageBase64 || '',
-    videourl: v.videourl || '',
+    videoUrl: v.videoUrl || '',
     desc: v.desc || v.description || '',
     specs: {
       thrusters: v.thrusters || '', dof: v.dof || '', depth: v.depth || '',
@@ -290,8 +290,13 @@ export default function Home() {
   const currentVehicle = fleet[activeFleetIndex];
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f0f9ff] via-[#bae6fd] via-[#0284c7] via-[#0c4a6e] via-[#0f172a] via-[#111827] to-[#020617] text-zinc-900 relative transition-all duration-350 overflow-hidden">
-      
+    <div className="min-h-screen text-zinc-900 relative transition-all duration-350 overflow-hidden">
+
+      {/* Fixed gradient background layer — stays pinned to the viewport as
+          you scroll, so the color blend always shows fully rather than
+          being stretched thin across the entire (much taller) page. */}
+      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-[#f0f9ff] via-[#bae6fd] via-[#0284c7] via-[#0c4a6e] via-[#0f172a] via-[#111827] to-[#020617]" />
+
       {/* Fixed Submarine Depth Gauge (renders ONLY on Home page) */}
       {/* <DepthGauge /> */}
 
