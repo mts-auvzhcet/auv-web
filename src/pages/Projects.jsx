@@ -78,7 +78,7 @@ export default function Projects() {
 
   if (!isHydrated()) {
     return (
-      <div className="bg-gradient-to-b from-[#0284c7] via-[#0c4a6e] to-[#0f172a] text-white min-h-screen flex items-center justify-center">
+      <div className="bg-gradient-to-b from-[#0c4a6e] via-[#0f172a] to-[#020617] text-white min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="w-8 h-8 border-2 border-sky-200/30 border-t-white rounded-full animate-spin" />
           <span className="text-xs text-sky-100/70 font-space uppercase tracking-wider">Loading projects...</span>
@@ -88,7 +88,7 @@ export default function Projects() {
   }
 
   return (
-    <div className="bg-gradient-to-b from-[#0284c7] via-[#0c4a6e] to-[#0f172a] text-white pt-24 pb-20 min-h-screen font-poppins relative selection:bg-blue-500/30">
+    <div className="bg-gradient-to-b from-[#0c4a6e] via-[#0f172a] to-[#020617] text-white pt-24 pb-20 min-h-screen font-poppins relative selection:bg-blue-500/30">
       
       <div className="max-w-6xl mx-auto px-6 md:px-8">
         
