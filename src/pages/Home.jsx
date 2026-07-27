@@ -304,7 +304,7 @@ export default function Home() {
       </div>
 
       {/* 1. HERO SECTION */}
-      <section className="min-h-[85vh] w-full flex items-center justify-center relative overflow-hidden px-6 pt-20">
+      <section className="min-h-screen w-full flex items-center justify-center relative overflow-hidden px-6 pt-20">
         
         {/* Background Video */}
         <video 
