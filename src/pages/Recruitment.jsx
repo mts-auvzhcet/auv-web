@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShieldCheck, Send, Calendar, Users, HelpCircle, FileText, Globe, Upload, CheckCircle, Info } from 'lucide-react';
-import { addItem, getCollection } from '../lib/store';
+import { ShieldCheck, Send, Calendar, Users, HelpCircle, FileText, Globe, Upload, CheckCircle, Info, Clock } from 'lucide-react';
+import { addItem, getCollection, isHydrated } from '../lib/store';
 import { useStore } from '../lib/useStore';
 
 export default function Recruitment() {
@@ -10,6 +10,7 @@ export default function Recruitment() {
   const forms = getCollection('forms');
   const activeForm = forms.find(f => f.isOpen && f.isRecruitment);
   const isRecruitmentOpen = !!activeForm;
+  const loadingDb = !isHydrated();
   
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -107,13 +108,26 @@ export default function Recruitment() {
             </div>
 
             <AnimatePresence mode="wait">
-              {!isRecruitmentOpen ? (
+              {loadingDb ? (
+                <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="py-20 flex flex-col items-center justify-center text-center gap-6">
+                  <div className="relative w-16 h-16 flex items-center justify-center">
+                    <div className="absolute inset-0 rounded-full border-4 border-sky-500/10 border-t-sky-400 animate-spin" />
+                    <div className="absolute inset-2 rounded-full border-4 border-sky-400/5 border-t-sky-500/40 animate-[spin_2s_linear_infinite_reverse]" />
+                    <div className="absolute inset-4 rounded-full bg-sky-500/10 flex items-center justify-center text-sky-400">
+                      <Clock size={16} className="animate-pulse" />
+                    </div>
+                  </div>
+                  <h3 className="text-lg font-bold font-space text-sky-400 uppercase tracking-widest animate-pulse">Initializing Portal...</h3>
+                  <p className="text-xs text-zinc-500 max-w-xs leading-relaxed font-light font-outfit">Connecting to the deep subsea database. Please wait a moment.</p>
+                </motion.div>
+              ) : !isRecruitmentOpen ? (
                 <motion.div key="closed" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="py-20 flex flex-col items-center justify-center text-center gap-6 text-zinc-400">
                   <div className="w-16 h-16 rounded-3xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-500 mb-2 shadow-xl"><Calendar size={32} /></div>
                   <h3 className="text-2xl font-bold font-outfit text-white uppercase tracking-wider">Recruitments Closed</h3>
                   <p className="text-sm max-w-sm leading-relaxed font-light font-outfit">There are no active recruitment cycles at the moment. Keep an eye on our social channels for updates.</p>
                 </motion.div>
-              ) : !submitted ? (                <motion.form key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onSubmit={handleSubmit} className="flex flex-col gap-6 font-outfit">
+              ) : !submitted ? (
+                <motion.form key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onSubmit={handleSubmit} className="flex flex-col gap-6 font-outfit">
                   {/* Full Name */}
                   <div className="flex flex-col gap-2.5">
                     <label className="text-[10px] font-bold font-space text-zinc-500 uppercase tracking-widest flex items-center gap-2">
