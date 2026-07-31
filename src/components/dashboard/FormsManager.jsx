@@ -103,13 +103,43 @@ export default function FormsManager() {
     const formSubs = submissions.filter(s => s.formId === form.id && s.version === version);
     if (formSubs.length === 0) return alert("No submissions to export.");
 
-    const headers = ["Submitted At", ...form.fields.filter(f => f.type !== 'display_image').map(f => f.label)];
-    const rows = formSubs.map(s => [
-      fmt(s.submittedAt),
-      ...form.fields.filter(f => f.type !== 'display_image').map(f => s[f.id] || "")
-    ]);
+    let headers, rows;
+    if (form.isRecruitment) {
+      headers = [
+        "Submitted At",
+        "Full Name",
+        "Email",
+        "Mobile Number",
+        "Department",
+        "Year of Study",
+        "Why Join",
+        "Additional Comments",
+        "CV Document"
+      ];
+      rows = formSubs.map(s => [
+        fmt(s.submittedAt),
+        s.name || "",
+        s.email || "",
+        s.phone || "",
+        s.department || "",
+        s.year || "",
+        s.whyJoin || "",
+        s.additionalComments || "",
+        s.cv || ""
+      ]);
+    } else {
+      headers = ["Submitted At", ...form.fields.filter(f => f.type !== 'display_image').map(f => f.label)];
+      rows = formSubs.map(s => [
+        fmt(s.submittedAt),
+        ...form.fields.filter(f => f.type !== 'display_image').map(f => s[f.id] || "")
+      ]);
+    }
 
-    const csvContent = [headers, ...rows].map(e => e.join(",")).join("\n");
+    const csvContent = [
+      headers.map(h => `"${h.replace(/"/g, '""')}"`),
+      ...rows.map(row => row.map(cell => `"${(cell || "").toString().replace(/"/g, '""')}"`))
+    ].map(e => e.join(",")).join("\n");
+
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const link = document.createElement("a");
     const url = URL.createObjectURL(blob);
@@ -182,11 +212,10 @@ export default function FormsManager() {
               <button
                 onClick={() => reinitializeForm(recruitmentForm)}
                 title="Start a brand-new response table — previous data stays archived, not deleted"
-                className="px-4 py-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-bold font-space uppercase tracking-wider hover:bg-red-500/20 transition-all"
+                className="px-4 py-2.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-bold font-space uppercase tracking-wider hover:bg-red-500/20 transition-all cursor-pointer"
               >
                 Reinitialize
               </button>
-              <button onClick={() => setEditingForm(recruitmentForm)} className="p-2.5 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white transition-all"><Settings size={18} /></button>
             </div>
           )}
         </div>

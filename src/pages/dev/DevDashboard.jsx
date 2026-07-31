@@ -11,6 +11,7 @@ import DashboardShell from "../../components/dashboard/DashboardShell";
 import MembersManager from "../../components/dashboard/MembersManager";
 import CollectionManager from "../../components/dashboard/CollectionManager";
 import FormsManager from "../../components/dashboard/FormsManager";
+import RecruitmentsManager from "../../components/dashboard/RecruitmentsManager";
 import DbSeeder from "../../components/dashboard/DbSeeder";
 import {
   eventsConfig,
@@ -25,6 +26,7 @@ const TABS = [
   { id: "projects", label: "Projects", icon: <FolderKanban size={14} /> },
   { id: "vehicles", label: "Vehicles", icon: <Truck size={14} /> },
   { id: "forms", label: "Forms", icon: <FileSpreadsheet size={14} /> },
+  { id: "recruitments", label: "Recruitments", icon: <FileSpreadsheet size={14} /> },
   { id: "advisory", label: "Advisory", icon: <Users size={14} /> },
   { id: "seed", label: "Seed DB", icon: <Database size={14} /> },
 ];
@@ -45,6 +47,7 @@ export default function DevDashboard() {
       {tab === "projects" && <CollectionManager config={projectsConfig} />}
       {tab === "vehicles" && <CollectionManager config={vehiclesConfig} />}
       {tab === "forms" && <FormsManager />}
+      {tab === "recruitments" && <RecruitmentsManager />}
       {tab === "advisory" && <CollectionManager config={advisoryConfig} />}
       {tab === "seed" && <DbSeeder />}
     </DashboardShell>

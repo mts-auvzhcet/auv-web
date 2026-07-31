@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Compass, Anchor, Cpu, Navigation, ChevronRight, ArrowRight } from 'lucide-react';
+import { Compass, Anchor, Cpu, Navigation, ChevronRight, ArrowRight, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getCollection, addItem } from '../lib/store';
 import SplitText from '../components/SplitText';
@@ -142,9 +142,21 @@ const DepthGauge = () => {
 export default function Home() {
   useStore();
   const [activeFleetIndex, setActiveFleetIndex] = useState(4); // Default to SEA 5.0
+  const [isFleetDropdownOpen, setIsFleetDropdownOpen] = useState(false);
+  const fleetDropdownRef = useRef(null);
   const [activeTab, setActiveTab] = useState('specs'); // specs, subsystems, mission
   const [subsystemTab, setSubsystemTab] = useState('mech');
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (fleetDropdownRef.current && !fleetDropdownRef.current.contains(event.target)) {
+        setIsFleetDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const fallbackFleet = [
     {
@@ -272,14 +284,9 @@ export default function Home() {
   }, []);
 
   // News Accordion State
-  const [openAccordion, setOpenAccordion] = useState('recruitment');
+  const [openAccordion, setOpenAccordion] = useState('projects');
   const openCustomForms = getCollection('forms').filter((f) => f.isOpen && !f.isRecruitment);
   const newsItems = [
-    {
-      id: 'recruitment',
-      title: 'Recruiting Soon!',
-      content: 'We will be recruiting soon for the next session. Keep checking our channels for application timeline updates.',
-    },
     {
       id: 'projects',
       title: 'Open Projects',
@@ -359,24 +366,24 @@ export default function Home() {
       <section className="py-32 px-6 max-w-6xl mx-auto z-10 relative">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
           
-          <div className="lg:col-span-12 flex flex-col gap-6 text-zinc-800">
+          <div className="lg:col-span-12 flex flex-col gap-6 text-white">
             <div>
-              <span className="text-zinc-500 text-xs font-semibold tracking-wider font-space uppercase">
+              <span className="text-sky-400 text-xs font-semibold tracking-wider font-space uppercase">
                 Introduction
               </span>
-              <h2 className="text-4xl sm:text-5xl font-black font-outfit text-zinc-900 uppercase tracking-tight mt-1">
+              <h2 className="text-4xl sm:text-5xl font-black font-outfit text-white uppercase tracking-tight mt-1">
                 A Legacy of Underwater Exploration
               </h2>
             </div>
             
-            <p className="text-zinc-700 text-sm leading-relaxed text-justify font-light">
+            <p className="text-zinc-300 text-sm leading-relaxed text-justify font-light">
               MTS AUV-ZHCET is a student research club established under the Marine Technology Society. We consist of software developers, electrical designers, and mechanical designers building custom subsea systems.
             </p>
 
             <div className="flex flex-col gap-4 border-l-2 border-sky-500 pl-5 py-0.5 mt-2">
               <div>
-                <span className="text-zinc-900 font-bold font-space text-xs tracking-wider uppercase block">Research Organization:</span>
-                <p className="text-zinc-650 mt-1 font-light text-xs sm:text-sm">We construct pressure vessels, leak sensor circuits, and real-time vision pipelines.</p>
+                <span className="text-white font-bold font-space text-xs tracking-wider uppercase block">Research Organization:</span>
+                <p className="text-zinc-300 mt-1 font-light text-xs sm:text-sm">We construct pressure vessels, leak sensor circuits, and real-time vision pipelines.</p>
               </div>
             </div>
           </div>
@@ -398,15 +405,15 @@ export default function Home() {
 
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-10">
           
-          {/* Left list selector (Elegant neutral colors with solid contrast) */}
-          <div className="lg:col-span-3 flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-x-visible pb-3 lg:pb-0 scrollbar-none">
+          {/* Desktop list selector */}
+          <div className="hidden lg:flex lg:col-span-3 flex-col gap-2">
             {fleet.map((item, index) => {
               const active = activeFleetIndex === index;
               return (
                 <button
                   key={index}
                   onClick={() => setActiveFleetIndex(index)}
-                  className={`w-full text-left p-4 rounded-xl border transition-all duration-300 font-space uppercase tracking-wider shrink-0 min-w-[180px] lg:min-w-0 ${
+                  className={`w-full text-left p-4 rounded-xl border transition-all duration-300 font-space uppercase tracking-wider ${
                     active
                       ? 'bg-sky-500/10 border-sky-500/50 text-sky-300 font-semibold shadow-lg shadow-sky-500/10'
                       : 'bg-zinc-950/60 border-zinc-900 text-zinc-400 hover:bg-zinc-950/80 hover:text-white hover:border-zinc-700'
@@ -416,6 +423,59 @@ export default function Home() {
                 </button>
               );
             })}
+          </div>
+
+          {/* Mobile dropdown selector */}
+          <div ref={fleetDropdownRef} className="lg:hidden relative z-20 w-full mb-2">
+            <button
+              onClick={() => setIsFleetDropdownOpen(!isFleetDropdownOpen)}
+              className="w-full flex items-center justify-between p-4 rounded-xl border border-zinc-900 bg-zinc-950/60 text-zinc-400 hover:text-white hover:border-zinc-700 font-space uppercase tracking-wider shadow-lg transition-all duration-300 cursor-pointer"
+            >
+              <div className="flex flex-col text-left">
+                <span className="text-[10px] text-sky-400 font-bold tracking-widest block mb-0.5">Select Vehicle</span>
+                <span className="text-sm font-extrabold text-white">{currentVehicle.name}</span>
+              </div>
+              <ChevronDown 
+                className={`w-5 h-5 text-sky-400 transition-transform duration-300 ${isFleetDropdownOpen ? 'rotate-180' : ''}`} 
+              />
+            </button>
+
+            <AnimatePresence>
+              {isFleetDropdownOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute left-0 right-0 mt-2 bg-zinc-950/90 border border-zinc-900 rounded-xl overflow-hidden shadow-2xl backdrop-blur-md z-30"
+                >
+                  <div className="py-1">
+                    {fleet.map((item, index) => {
+                      const active = activeFleetIndex === index;
+                      return (
+                        <button
+                          key={index}
+                          onClick={() => {
+                            setActiveFleetIndex(index);
+                            setIsFleetDropdownOpen(false);
+                          }}
+                          className={`w-full text-left px-5 py-4 border-b border-zinc-900/50 last:border-b-0 transition-colors duration-200 flex items-center justify-between font-space uppercase tracking-wider cursor-pointer ${
+                            active
+                              ? 'bg-sky-500/10 text-sky-300 font-semibold'
+                              : 'text-zinc-400 hover:bg-zinc-900 hover:text-white'
+                          }`}
+                        >
+                          <span className="text-xs font-bold">{item.name}</span>
+                          {active && (
+                            <span className="w-1.5 h-1.5 rounded-full bg-sky-400 shadow-[0_0_8px_rgba(56,189,248,0.8)]" />
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Active vehicle cinematic panel */}
@@ -429,45 +489,42 @@ export default function Home() {
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center flex-grow">
-              
-              {/* Cinematic Float Animation AUV Visual */}
-              <div className="md:col-span-5 flex flex-col items-center justify-center relative min-h-[250px]">
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeFleetIndex}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.5 }}
-                    className="w-full flex justify-center relative"
-                  >
-                    {/* Slow floating translation */}
-                    <div className="animate-[bounce_6s_ease-in-out_infinite] relative">
-                      <div className="absolute inset-0 bg-sky-500/20 blur-3xl rounded-full scale-75" />
-                      {currentVehicle.videoUrl ? (
-                        <video
-                          src={currentVehicle.videoUrl}
-                          autoPlay
-                          loop
-                          muted
-                          playsInline
-                          className="max-h-[240px] object-contain relative filter drop-shadow-[0_15px_35px_rgba(56,189,248,0.25)]"
-                        />
-                      ) : (
-                        <img
-                          src={currentVehicle.img}
-                          alt={currentVehicle.name}
-                          className="max-h-[240px] object-contain relative filter drop-shadow-[0_15px_35px_rgba(56,189,248,0.25)]"
-                        />
-                      )}
-                    </div>
-                  </motion.div>
-                </AnimatePresence>
-              </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeFleetIndex}
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+                className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center flex-grow w-full"
+              >
+                
+                {/* Cinematic Float Animation AUV Visual */}
+                <div className="md:col-span-5 flex flex-col items-center justify-center relative min-h-[250px]">
+                  {/* Slow floating translation */}
+                  <div className="animate-[bounce_6s_ease-in-out_infinite] relative w-full flex justify-center">
+                    <div className="absolute inset-0 bg-sky-500/20 blur-3xl rounded-full scale-75" />
+                    {currentVehicle.videoUrl ? (
+                      <video
+                        src={currentVehicle.videoUrl}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        className="max-h-[240px] object-contain relative filter drop-shadow-[0_15px_35px_rgba(56,189,248,0.25)]"
+                      />
+                    ) : (
+                      <img
+                        src={currentVehicle.img}
+                        alt={currentVehicle.name}
+                        className="max-h-[240px] object-contain relative filter drop-shadow-[0_15px_35px_rgba(56,189,248,0.25)]"
+                      />
+                    )}
+                  </div>
+                </div>
 
-              {/* Panel Details & Tabs */}
-              <div className="md:col-span-7 flex flex-col justify-between h-full">
+                {/* Panel Details & Tabs */}
+                <div className="md:col-span-7 flex flex-col justify-between h-full w-full">
                 <div>
                   <div className="flex justify-between items-baseline border-b border-zinc-900 pb-3 mb-4">
                     <div>
@@ -541,9 +598,9 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-
-            </div>
-          </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
 
         </div>
       </section>

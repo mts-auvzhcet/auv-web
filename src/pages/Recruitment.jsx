@@ -33,16 +33,6 @@ export default function Recruitment() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleFileChange = (e, fieldId) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setFormData((prev) => ({ ...prev, [fieldId]: reader.result }));
-    };
-    reader.readAsDataURL(file);
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -123,76 +113,137 @@ export default function Recruitment() {
                   <h3 className="text-2xl font-bold font-outfit text-white uppercase tracking-wider">Recruitments Closed</h3>
                   <p className="text-sm max-w-sm leading-relaxed font-light font-outfit">There are no active recruitment cycles at the moment. Keep an eye on our social channels for updates.</p>
                 </motion.div>
-              ) : !submitted ? (
-                <motion.form key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onSubmit={handleSubmit} className="flex flex-col gap-6 font-outfit">
-                  {activeForm.fields?.map((field) => (
-                    <div key={field.id} className="flex flex-col gap-2.5">
-                      {field.type !== 'display_image' && (
-                        <label className="text-[10px] font-bold font-space text-zinc-500 uppercase tracking-widest flex items-center gap-2">
-                          {field.label} {field.required && <span className="text-red-500 text-xs">*</span>}
-                        </label>
-                      )}
-                      
-                      {field.type === 'textarea' ? (
-                        <textarea
-                          name={field.id}
-                          required={field.required}
-                          value={formData[field.id] || ''}
-                          onChange={handleInputChange}
-                          className="bg-black/40 border border-zinc-800 rounded-2xl p-4 text-sm text-zinc-200 placeholder-zinc-700 focus:outline-none focus:border-sky-500/40 w-full transition-all"
-                          rows="4"
-                          placeholder={`Enter your ${field.label.toLowerCase()}...`}
-                        />
-                      ) : field.type === 'image' ? (
-                        <div className="relative group">
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => handleFileChange(e, field.id)}
-                            className="hidden"
-                            id={`file-${field.id}`}
-                            required={field.required && !formData[field.id]}
-                          />
-                          <label
-                            htmlFor={`file-${field.id}`}
-                            className="flex flex-col items-center justify-center gap-3 bg-black/40 border border-zinc-800 border-dashed rounded-2xl p-10 text-zinc-500 cursor-pointer group-hover:border-sky-500/40 group-hover:bg-sky-500/5 transition-all"
-                          >
-                            {formData[field.id] ? (
-                              <div className="flex flex-col items-center gap-4">
-                                <img src={formData[field.id]} alt="Preview" className="w-24 h-24 object-cover rounded-2xl border border-zinc-800 shadow-xl" />
-                                <span className="text-[10px] text-sky-400 font-bold uppercase tracking-widest">Change Image</span>
-                              </div>
-                            ) : (
-                              <>
-                                <Upload size={24} />
-                                <span className="text-[10px] font-bold uppercase tracking-widest">Upload {field.label}</span>
-                              </>
-                            )}
-                          </label>
-                        </div>
-                      ) : field.type === 'display_image' ? (
-                        <div className="flex flex-col gap-3 mb-4">
-                           <div className="flex items-center gap-2 text-[10px] font-bold font-space text-sky-400 uppercase tracking-widest">
-                            <Info size={12}/> Instruction
-                          </div>
-                          <div className="overflow-hidden rounded-2xl border border-zinc-800 shadow-lg">
-                            <img src={field.displayImage} alt="Instructional" className="w-full h-auto object-cover" />
-                          </div>
-                          <p className="text-xs text-zinc-500 font-light italic">{field.label}</p>
-                        </div>
-                      ) : (
-                        <input
-                          type="text"
-                          name={field.id}
-                          required={field.required}
-                          value={formData[field.id] || ''}
-                          onChange={handleInputChange}
-                          className="bg-black/40 border border-zinc-800 rounded-2xl p-4 text-sm text-zinc-200 placeholder-zinc-700 focus:outline-none focus:border-sky-500/40 w-full transition-all"
-                          placeholder={`Type your answer...`}
-                        />
-                      )}
-                    </div>
-                  ))}
+              ) : !submitted ? (                <motion.form key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onSubmit={handleSubmit} className="flex flex-col gap-6 font-outfit">
+                  {/* Full Name */}
+                  <div className="flex flex-col gap-2.5">
+                    <label className="text-[10px] font-bold font-space text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+                      Full Name <span className="text-red-500 text-xs">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      required
+                      value={formData.name || ''}
+                      onChange={handleInputChange}
+                      className="bg-black/40 border border-zinc-800 rounded-2xl p-4 text-sm text-zinc-200 placeholder-zinc-700 focus:outline-none focus:border-sky-500/40 w-full transition-all"
+                      placeholder="Enter your full name..."
+                    />
+                  </div>
+
+                  {/* Email */}
+                  <div className="flex flex-col gap-2.5">
+                    <label className="text-[10px] font-bold font-space text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+                      Email Address <span className="text-red-500 text-xs">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      required
+                      value={formData.email || ''}
+                      onChange={handleInputChange}
+                      className="bg-black/40 border border-zinc-800 rounded-2xl p-4 text-sm text-zinc-200 placeholder-zinc-700 focus:outline-none focus:border-sky-500/40 w-full transition-all"
+                      placeholder="Enter your email address..."
+                    />
+                  </div>
+
+                  {/* Mobile Number */}
+                  <div className="flex flex-col gap-2.5">
+                    <label className="text-[10px] font-bold font-space text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+                      Mobile Number <span className="text-red-500 text-xs">*</span>
+                    </label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      required
+                      value={formData.phone || ''}
+                      onChange={handleInputChange}
+                      className="bg-black/40 border border-zinc-800 rounded-2xl p-4 text-sm text-zinc-200 placeholder-zinc-700 focus:outline-none focus:border-sky-500/40 w-full transition-all"
+                      placeholder="Enter your 10-digit mobile number..."
+                    />
+                  </div>
+
+                  {/* Department */}
+                  <div className="flex flex-col gap-2.5">
+                    <label className="text-[10px] font-bold font-space text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+                      Department <span className="text-red-500 text-xs">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="department"
+                      required
+                      value={formData.department || ''}
+                      onChange={handleInputChange}
+                      className="bg-black/40 border border-zinc-800 rounded-2xl p-4 text-sm text-zinc-200 placeholder-zinc-700 focus:outline-none focus:border-sky-500/40 w-full transition-all"
+                      placeholder="e.g. Mechanical Engineering, Computer Engineering..."
+                    />
+                  </div>
+
+                  {/* Year */}
+                  <div className="flex flex-col gap-2.5">
+                    <label className="text-[10px] font-bold font-space text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+                      Year <span className="text-red-500 text-xs">*</span>
+                    </label>
+                    <select
+                      name="year"
+                      required
+                      value={formData.year || ''}
+                      onChange={handleInputChange}
+                      className="bg-black/40 border border-zinc-800 rounded-2xl p-4 text-sm text-zinc-200 focus:outline-none focus:border-sky-500/40 w-full transition-all appearance-none cursor-pointer"
+                    >
+                      <option value="" disabled className="bg-zinc-950">Select your year...</option>
+                      <option value="1st Year" className="bg-zinc-950">1st Year</option>
+                      <option value="2nd Year" className="bg-zinc-950">2nd Year</option>
+                      <option value="3rd Year" className="bg-zinc-950">3rd Year</option>
+                      <option value="4th Year" className="bg-zinc-950">4th Year</option>
+                    </select>
+                  </div>
+
+                  {/* Google Drive CV Link */}
+                  <div className="flex flex-col gap-2.5">
+                    <label className="text-[10px] font-bold font-space text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+                      CV Link (Google Drive / Accessible Link) <span className="text-red-500 text-xs">*</span>
+                    </label>
+                    <input
+                      type="url"
+                      name="cv"
+                      required
+                      value={formData.cv || ''}
+                      onChange={handleInputChange}
+                      className="bg-black/40 border border-zinc-800 rounded-2xl p-4 text-sm text-zinc-200 placeholder-zinc-700 focus:outline-none focus:border-sky-500/40 w-full transition-all"
+                      placeholder="Paste accessible Google Drive CV link..."
+                    />
+                  </div>
+
+                  {/* Why do you want to join the club? */}
+                  <div className="flex flex-col gap-2.5">
+                    <label className="text-[10px] font-bold font-space text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+                      Why do you want to join the club? <span className="text-red-500 text-xs">*</span>
+                    </label>
+                    <textarea
+                      name="whyJoin"
+                      required
+                      value={formData.whyJoin || ''}
+                      onChange={handleInputChange}
+                      className="bg-black/40 border border-zinc-800 rounded-2xl p-4 text-sm text-zinc-200 placeholder-zinc-700 focus:outline-none focus:border-sky-500/40 w-full transition-all"
+                      rows="4"
+                      placeholder="Tell us about your motivation to join..."
+                    />
+                  </div>
+
+                  {/* Any additional comment */}
+                  <div className="flex flex-col gap-2.5">
+                    <label className="text-[10px] font-bold font-space text-zinc-500 uppercase tracking-widest flex items-center gap-2">
+                      Any additional comment
+                    </label>
+                    <textarea
+                      name="additionalComments"
+                      value={formData.additionalComments || ''}
+                      onChange={handleInputChange}
+                      className="bg-black/40 border border-zinc-800 rounded-2xl p-4 text-sm text-zinc-200 placeholder-zinc-700 focus:outline-none focus:border-sky-500/40 w-full transition-all"
+                      rows="3"
+                      placeholder="Any projects, links, or comments you would like to share..."
+                    />
+                  </div>
 
                   <button
                     type="submit"
