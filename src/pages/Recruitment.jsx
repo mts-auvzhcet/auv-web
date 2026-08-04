@@ -215,16 +215,15 @@ export default function Recruitment() {
                   {/* Google Drive CV Link */}
                   <div className="flex flex-col gap-2.5">
                     <label className="text-[10px] font-bold font-space text-zinc-500 uppercase tracking-widest flex items-center gap-2">
-                      CV Link (Google Drive / Accessible Link) <span className="text-red-500 text-xs">*</span>
+                      CV Link (Google Drive / Accessible Link) 
                     </label>
                     <input
                       type="url"
                       name="cv"
-                      required
                       value={formData.cv || ''}
                       onChange={handleInputChange}
                       className="bg-black/40 border border-zinc-800 rounded-2xl p-4 text-sm text-zinc-200 placeholder-zinc-700 focus:outline-none focus:border-sky-500/40 w-full transition-all"
-                      placeholder="Paste accessible Google Drive CV link..."
+                      placeholder="Paste accessible Google Drive CV link (optional)..."
                     />
                   </div>
 
