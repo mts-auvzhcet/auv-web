@@ -80,7 +80,7 @@ export default function Recruitment() {
                 <HelpCircle size={18} className="text-sky-400 shrink-0 mt-0.5" />
                 <div>
                   <span className="text-[10px] text-zinc-550 font-bold font-space uppercase tracking-wider block">Eligibility Bounds</span>
-                  <p className="text-zinc-400 text-xs mt-1 leading-normal font-light">Open to all B.Tech / B.E. / Diploma branches of 1st, 2nd, and 3rd year.</p>
+                  <p className="text-zinc-400 text-xs mt-1 leading-normal font-light">Open to all B.Tech / B.E. / Diploma branches of all years.</p>
                 </div>
               </div>
             </div>
