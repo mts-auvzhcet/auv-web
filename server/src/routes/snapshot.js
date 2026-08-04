@@ -19,7 +19,7 @@ r.get("/", optionalAuth, async (_req, res) => {
     // this only covers the remaining shared collections (announcements,
     // recruitments, advisory, forms).
     q(
-      "SELECT id, collection, data, created_at FROM items WHERE collection NOT IN ('events','vehicles','projects','recruitments','forms') ORDER BY created_at ASC",
+      "SELECT id, collection, data, created_at FROM items WHERE collection NOT IN ('events','vehicles','projects','recruitments') ORDER BY created_at ASC",
     ),
     q("SELECT value FROM settings WHERE key='info_md'"),
   ]);
