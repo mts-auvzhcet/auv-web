@@ -502,7 +502,7 @@ export default function Home() {
                 {/* Cinematic Float Animation AUV Visual */}
                 <div className="md:col-span-5 flex flex-col items-center justify-center relative min-h-[250px]">
                   {/* Slow floating translation */}
-                  <div className="animate-[bounce_6s_ease-in-out_infinite] relative w-full flex justify-center">
+                  <div className="relative w-full flex justify-center">
                     <div className="absolute inset-0 bg-sky-500/20 blur-3xl rounded-full scale-75" />
                     {currentVehicle.videoUrl ? (
                       <video

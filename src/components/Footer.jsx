@@ -21,7 +21,6 @@ export default function Footer() {
     { name: 'Vehicles', path: '/' },
     { name: 'Achievements', path: '/events' },
     { name: 'Team Leads', path: '/leadership' },
-    { name: 'Technology', path: '/tech' },
   ];
 
   const mediaLinks = [

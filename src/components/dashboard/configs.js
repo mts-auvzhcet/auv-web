@@ -98,8 +98,9 @@ export const advisoryConfig = {
   imageKey: "imageBase64",
   fields: [
     { key: "name", label: "Name", required: true },
-    { key: "role", label: "Designation/Role", required: true },
+    { key: "role", label: "Designation/Role (use the word 'Councilor' for the single Faculty Councilor entry — everyone else shows as a Faculty Advisor)", required: true },
+    { key: "dept", label: "Department", required: false },
     { key: "imageBase64", label: "Member Image", type: "file" },
-    { key: "text", label: "Quote / Text", textarea: true, required: true },
+    { key: "text", label: "Quote / Text (only shown for the Councilor)", textarea: true, required: false },
   ],
 };

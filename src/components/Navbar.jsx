@@ -40,7 +40,7 @@ export default function Navbar() {
     }`}>
       
       {/* Desktop Navigation */}
-      <div className="hidden md:flex justify-center items-center font-poppins font-light text-sm py-3.5 px-8 lg:px-12 w-full">
+      <div className="hidden md:flex justify-between items-center font-poppins font-light text-sm py-3.5 px-8 lg:px-12 w-full">
         <Link to="/" className="text-white shrink-0">
           <img
             alt="logo"
@@ -50,25 +50,28 @@ export default function Navbar() {
             src="https://auvzhcet.vercel.app/auv1.png"
           />
         </Link>
-        {navLinks.map((link, idx) => (
-          <Link
-            key={idx}
-            to={link.path}
-            className={`flex items-center font-apple hover:text-white hover:scale-105 transition-all duration-300 whitespace-nowrap ${
-              isActive(link.path) ? 'text-sky-400 font-medium' : 'text-[#ffffffcc]'
-            }`}
+
+        <div className="flex-1 flex items-center justify-center gap-8">
+          {navLinks.map((link, idx) => (
+            <Link
+              key={idx}
+              to={link.path}
+              className={`flex items-center font-apple hover:text-white hover:scale-105 transition-all duration-300 whitespace-nowrap ${
+                isActive(link.path) ? 'text-sky-400 font-medium' : 'text-[#ffffffcc]'
+              }`}
+            >
+              {link.name}
+            </Link>
+          ))}
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#ffffffcc] flex items-center font-apple hover:text-white hover:scale-105 transition-all duration-300 whitespace-nowrap"
+            href="https://rovcsite.onrender.com"
           >
-            {link.name}
-          </Link>
-        ))}
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-[#ffffffcc] flex items-center font-apple hover:text-white hover:scale-105 transition-all duration-300 whitespace-nowrap"
-          href="https://rovcsite.onrender.com"
-        >
-          AMU ROVc
-        </a>
+            AMU ROVc
+          </a>
+        </div>
 
         {/* Dashboard/Logout only show when already signed in. There is no
             visible Login entry point in the navbar by design — the /login

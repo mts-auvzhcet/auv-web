@@ -16,6 +16,49 @@ function fmt(dt) {
   try { return new Date(dt).toLocaleString(); } catch { return dt; }
 }
 
+function SubmissionRow({ submission, fields }) {
+  const [open, setOpen] = useState(false);
+  const primaryLabel = submission.name || submission.email || submission.id;
+
+  return (
+    <div className="border-b border-zinc-900/60 last:border-b-0">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center justify-between px-6 py-3 text-left hover:bg-zinc-900/30 transition-colors"
+      >
+        <div className="flex items-center gap-3">
+          {open ? <ChevronDown size={14} className="text-zinc-600" /> : <ChevronRight size={14} className="text-zinc-600" />}
+          <span className="text-xs text-zinc-300 font-medium">{primaryLabel}</span>
+        </div>
+        <span className="text-[10px] text-zinc-600 font-space">{fmt(submission.submittedAt)}</span>
+      </button>
+      {open && (
+        <div className="px-6 pb-4 pl-9 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {fields.filter((f) => f.type !== 'display_image').map((f) => (
+            <div key={f.id}>
+              <p className="text-[10px] text-zinc-600 uppercase font-space tracking-wider mb-1">{f.label}</p>
+              {f.type === 'image' ? (
+                submission[f.id] ? (
+                  <img
+                    src={submission[f.id]}
+                    alt={f.label}
+                    className="max-h-40 rounded-lg border border-zinc-800 object-contain cursor-zoom-in"
+                    onClick={() => window.open(submission[f.id], '_blank')}
+                  />
+                ) : (
+                  <p className="text-xs text-zinc-700 italic">No image uploaded</p>
+                )
+              ) : (
+                <p className="text-xs text-zinc-300 break-words whitespace-pre-wrap">{submission[f.id] || '-'}</p>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function FormsManager() {
   const { user } = useAuth();
   const db = useStore();
@@ -40,6 +83,18 @@ export default function FormsManager() {
         ] 
       }, user);
     }
+  };
+
+  const deleteAllSubmissions = (form) => {
+    const toDelete = submissions.filter((s) => s.formId === form.id);
+    if (toDelete.length === 0) return alert('No submissions to delete.');
+    if (
+      !window.confirm(
+        `Delete all ${toDelete.length} submissions for "${form.title}"? This cannot be undone — export a CSV first if you want a copy.`,
+      )
+    )
+      return;
+    toDelete.forEach((s) => deleteItem('recruitments', s.id, user));
   };
 
   const deleteForm = (id) => {
@@ -128,10 +183,17 @@ export default function FormsManager() {
         s.cv || ""
       ]);
     } else {
-      headers = ["Submitted At", ...form.fields.filter(f => f.type !== 'display_image').map(f => f.label)];
+      const csvFields = form.fields.filter(f => f.type !== 'display_image' && f.type !== 'image');
+      const imageFields = form.fields.filter(f => f.type === 'image');
+      headers = [
+        "Submitted At",
+        ...csvFields.map(f => f.label),
+        ...imageFields.map(f => `${f.label} (view in dashboard)`),
+      ];
       rows = formSubs.map(s => [
         fmt(s.submittedAt),
-        ...form.fields.filter(f => f.type !== 'display_image').map(f => s[f.id] || "")
+        ...csvFields.map(f => s[f.id] || ""),
+        ...imageFields.map(f => (s[f.id] ? "Image attached — open this submission in the dashboard to view" : "")),
       ]);
     }
 
@@ -257,6 +319,15 @@ export default function FormsManager() {
                   </div>
                   <div className="flex items-center gap-3">
                     <button
+                      onClick={() => {
+                        navigator.clipboard.writeText(`${window.location.origin}/forms/${f.id}`);
+                        alert('Form link copied to clipboard!');
+                      }}
+                      className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-400 text-[10px] font-bold font-space uppercase tracking-wider hover:text-white transition-all"
+                    >
+                      Copy Link
+                    </button>
+                    <button
                       onClick={() => exportToCSV(f, currentVersion)}
                       className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-sky-500/10 border border-sky-500/20 text-sky-400 text-[10px] font-bold font-space uppercase tracking-wider hover:bg-sky-500/20 transition-all"
                     >
@@ -269,11 +340,32 @@ export default function FormsManager() {
                     >
                       Reinitialize
                     </button>
+                    <button
+                      onClick={() => deleteAllSubmissions(f)}
+                      title="Permanently delete all submissions for this form (export CSV first if you need a copy)"
+                      className="px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-500 text-[10px] font-bold font-space uppercase tracking-wider hover:text-red-400 hover:border-red-500/30 transition-all"
+                    >
+                      Clear Data
+                    </button>
                     <button onClick={() => setEditingForm(f)} className="p-2 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-500 hover:text-white transition-all"><Settings size={14} /></button>
                     <button onClick={() => toggleFormStatus(f)} className={`px-4 py-1.5 rounded-lg border text-[10px] font-bold font-space uppercase tracking-widest transition-all ${f.isOpen ? 'bg-green-500/10 border-green-500/40 text-green-400' : 'bg-zinc-900 border-zinc-800 text-zinc-500'}`}>{f.isOpen ? 'Live' : 'Closed'}</button>
                     <button onClick={() => deleteForm(f.id)} className="p-2 rounded-lg text-zinc-700 hover:text-red-500 transition-colors"><Trash2 size={14} /></button>
                   </div>
                 </div>
+
+                {open && (
+                  <div className="border-t border-zinc-900">
+                    {formSubs.filter((s) => (s.version || 1) === currentVersion).length === 0 ? (
+                      <p className="text-center text-zinc-600 text-xs py-6 italic">No submissions yet for this form.</p>
+                    ) : (
+                      formSubs
+                        .filter((s) => (s.version || 1) === currentVersion)
+                        .map((s) => (
+                          <SubmissionRow key={s.id} submission={s} fields={f.fields || []} />
+                        ))
+                    )}
+                  </div>
+                )}
 
                 {open && currentVersion > 1 && (
                   <div className="border-t border-zinc-900 px-6 py-3 bg-black/10">

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getMembers, getDB, isHydrated } from '../lib/store';
+import { getMembers, getDB, isHydrated, getCollection } from '../lib/store';
 import { useStore } from '../lib/useStore';
 
 // Map a store member record (name, designation, imageUrl, branch, oneLiner)
@@ -76,6 +76,33 @@ export default function Leadership() {
       img: 'https://api.amu.ac.in/storage/images/empphoto/10080909-1767331462.jpg',
     },
   ];
+
+  // Advisory board is editable from the dashboard (Advisory tab). Each entry's
+  // `role` field determines whether it's the Councilor or an Advisor — put
+  // the exact word "Councilor" in the role for the one councilor, anything
+  // else (e.g. "Faculty Advisor") is treated as an advisor. `text` doubles
+  // as the councilor's quote/bio.
+  const advisoryDb = getCollection('advisory');
+  const dbCouncilor = advisoryDb.find((a) => /councilor/i.test(a.role || ''));
+  const dbAdvisors = advisoryDb.filter((a) => !/councilor/i.test(a.role || ''));
+
+  const councilorToShow = dbCouncilor
+    ? {
+        name: dbCouncilor.name,
+        role: dbCouncilor.role,
+        dept: dbCouncilor.dept || '',
+        img: dbCouncilor.imageBase64 || dbCouncilor.img || 'https://auvzhcet.vercel.app/Team/no.jpg',
+        bio: dbCouncilor.text || '',
+      }
+    : (isHydrated() && advisoryDb.length > 0 ? null : facultyCouncilor);
+
+  const advisorsToShow = dbAdvisors.length > 0
+    ? dbAdvisors.map((a) => ({
+        name: a.name,
+        dept: a.dept || '',
+        img: a.imageBase64 || a.img || 'https://auvzhcet.vercel.app/Team/no.jpg',
+      }))
+    : (isHydrated() && advisoryDb.length > 0 ? [] : facultyAdvisors);
 
   const team2026_27 = [
     { name: 'Mohd Ayaan Zafar', role: 'Chairperson (Management Affairs)', subteam: 'Management', img: 'https://auvzhcet.vercel.app/Team/ayan.jpg' },
@@ -204,26 +231,28 @@ export default function Leadership() {
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
           
           {/* Faculty Councilor */}
-          <div className="w-full lg:w-1/3 flex flex-col items-center border-b lg:border-b-0 lg:border-r border-zinc-900 pb-8 lg:pb-0 lg:pr-8">
-            <h2 className="text-center text-zinc-400 font-poppins tracking-[3px] text-base md:text-lg font-semibold border-b border-zinc-800 pb-2 mb-8 uppercase">
-              Faculty Councilor
-            </h2>
-            <div className="flex flex-col items-center text-center max-w-[240px]">
-              <div className="overflow-hidden rounded-2xl border border-zinc-800 shadow-lg aspect-square w-48 mb-4 hover:border-zinc-700 transition-all duration-300">
-                <img
-                  alt={facultyCouncilor.name}
-                  className="object-cover w-full h-full transition-all duration-500 ease-out"
-                  src={facultyCouncilor.img}
-                />
+          {councilorToShow && (
+            <div className="w-full lg:w-1/3 flex flex-col items-center border-b lg:border-b-0 lg:border-r border-zinc-900 pb-8 lg:pb-0 lg:pr-8">
+              <h2 className="text-center text-zinc-400 font-poppins tracking-[3px] text-base md:text-lg font-semibold border-b border-zinc-800 pb-2 mb-8 uppercase">
+                Faculty Councilor
+              </h2>
+              <div className="flex flex-col items-center text-center max-w-[240px]">
+                <div className="overflow-hidden rounded-2xl border border-zinc-800 shadow-lg aspect-square w-48 mb-4 hover:border-zinc-700 transition-all duration-300">
+                  <img
+                    alt={councilorToShow.name}
+                    className="object-cover w-full h-full transition-all duration-500 ease-out"
+                    src={councilorToShow.img}
+                  />
+                </div>
+                <h3 className="font-bold text-white text-base md:text-lg leading-snug">{councilorToShow.name}</h3>
+                <p className="text-zinc-450 text-xs font-semibold mt-1 font-apple uppercase tracking-wider">{councilorToShow.role}</p>
+                <p className="text-zinc-500 text-[10px] mt-1 font-apple leading-tight">{councilorToShow.dept}</p>
+                <p className="text-zinc-400 text-xs mt-3 leading-relaxed italic font-apple border-t border-zinc-900 pt-3">
+                  "{councilorToShow.bio}"
+                </p>
               </div>
-              <h3 className="font-bold text-white text-base md:text-lg leading-snug">{facultyCouncilor.name}</h3>
-              <p className="text-zinc-450 text-xs font-semibold mt-1 font-apple uppercase tracking-wider">{facultyCouncilor.role}</p>
-              <p className="text-zinc-500 text-[10px] mt-1 font-apple leading-tight">{facultyCouncilor.dept}</p>
-              <p className="text-zinc-400 text-xs mt-3 leading-relaxed italic font-apple border-t border-zinc-900 pt-3">
-                "{facultyCouncilor.bio}"
-              </p>
             </div>
-          </div>
+          )}
 
           {/* Faculty Advisors */}
           <div className="w-full lg:w-2/3 flex flex-col items-center">
@@ -231,7 +260,7 @@ export default function Leadership() {
               Faculty Advisors
             </h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-6 w-full">
-              {facultyAdvisors.map((adv, idx) => (
+              {advisorsToShow.map((adv, idx) => (
                 <div key={idx} className="flex flex-col items-center text-center">
                   <div className="overflow-hidden rounded-xl border border-zinc-850 shadow-md aspect-square w-28 sm:w-32 mb-3 hover:border-zinc-700 transition-all duration-300">
                     <img
