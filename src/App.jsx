@@ -7,7 +7,6 @@ import Leadership from './pages/Leadership';
 import Projects from './pages/Projects';
 import Events from './pages/Events';
 import Benefactors from './pages/Benefactors';
-import Tech from './pages/Tech';
 import Recruitment from './pages/Recruitment';
 import Login from './pages/Login';
 import DevDashboard from './pages/dev/DevDashboard';
@@ -33,7 +32,6 @@ export default function App() {
               <Route path="/projects" element={<Projects />} />
               <Route path="/events" element={<Events />} />
               <Route path="/benefactors" element={<Benefactors />} />
-              <Route path="/tech" element={<Tech />} />
               <Route path="/recruitment" element={<Recruitment />} />
               <Route path="/login" element={<Login />} />
               <Route

@@ -27,7 +27,6 @@ export default function Navbar() {
     { name: 'Members', path: '/leadership' },
     { name: 'Project', path: '/projects' },
     { name: 'Event', path: '/events' },
-    { name: 'Tech', path: '/tech' },
     { name: 'Recruitment', path: '/recruitment' },
   ];
 
@@ -41,7 +40,7 @@ export default function Navbar() {
     }`}>
       
       {/* Desktop Navigation */}
-      <div className="hidden md:flex justify-center items-center gap-x-8 font-poppins font-light text-sm py-3.5 px-6">
+      <div className="hidden md:flex justify-center items-center font-poppins font-light text-sm py-3.5 px-8 lg:px-12 w-full">
         <Link to="/" className="text-white shrink-0">
           <img
             alt="logo"

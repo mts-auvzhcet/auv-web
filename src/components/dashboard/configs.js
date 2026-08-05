@@ -18,6 +18,23 @@ export const eventsConfig = {
   ],
 };
 
+export const facultyConfig = {
+  name: "faculty",
+  label: "Faculty",
+  titleKey: "name",
+  subtitleKey: "role",
+  imageKey: "imageBase64",
+  fields: [
+    { key: "name", label: "Name", required: true },
+    { key: "role", label: "Role", required: true, placeholder: "Faculty Advisor / Faculty Councilor" },
+    { key: "dept", label: "Department" },
+    { key: "img", label: "Image URL (or upload below)" },
+    { key: "imageBase64", label: "Photo Upload", type: "file" },
+    { key: "bio", label: "Quote / Bio", textarea: true },
+    { key: "sort", label: "Sort order (number)", placeholder: "1" },
+  ],
+};
+
 export const projectsConfig = {
   name: "projects",
   label: "Project",

@@ -27,6 +27,7 @@ const EMPTY_DB = {
   announcements: [],
   recruitments: [],
   advisory: [],
+  forms: [],
   audit: [],
   infoMd: "",
 };
@@ -85,6 +86,16 @@ export async function hydrate() {
           const [u, a] = await Promise.all([api.get("/users"), api.get("/audit")]);
           cache.users = u.users || [];
           cache.audit = a.audit || [];
+        }
+        // recruitments (form submissions, can contain large base64 images
+        // and applicant PII) are deliberately excluded from the public /db
+        // snapshot — admins/developers pull them separately here,
+        // authenticated, only when actually logged in. `forms` (the form
+        // definitions/open-closed status) stay in the public snapshot since
+        // the public Recruitment page needs them to render.
+        if (me?.user?.role === "developer" || me?.user?.role === "admin") {
+          const rec = await api.get("/collections/recruitments");
+          cache.recruitments = rec.items || [];
         }
       } catch {
         // token invalid — ignore
