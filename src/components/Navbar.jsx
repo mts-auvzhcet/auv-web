@@ -51,7 +51,7 @@ export default function Navbar() {
           />
         </Link>
 
-        <div className="flex-1 flex items-center justify-center gap-8">
+        <div className="flex-1 flex items-center justify-between max-w-2xl mx-auto">
           {navLinks.map((link, idx) => (
             <Link
               key={idx}

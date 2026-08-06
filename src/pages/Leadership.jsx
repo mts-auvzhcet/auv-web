@@ -25,7 +25,7 @@ export default function Leadership() {
 
   const sponsors = [
     { name: 'Designing Printing Innovation', img: 'https://auvzhcet.vercel.app/benefactors/depi.png', type: 'Print & Media Partner' },
-    { name: 'KTM', img: 'https://auvzhcet.vercel.app/benefactors/KTM%20logo.png', type: 'Technical Support' },
+    { name: 'KTM', img: 'https://auvzhcet.vercel.app/benefactors/KTM%20logo.png', type: ' Our previous Technical Support' },
     { name: 'Shiva Group', img: 'https://auvzhcet.vercel.app/benefactors/SG.png', type: 'Manufacturing Sponsor' },
     { name: 'Triumph', img: 'https://auvzhcet.vercel.app/benefactors/TRIUMPH.png', type: 'Hardware Partner' },
   ];
