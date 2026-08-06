@@ -30,7 +30,7 @@ r.get("/", optionalAuth, async (_req, res) => {
     (membersBySession[m.session_name] ||= []).push({ id: m.id, ...(m.data || {}) });
   }
 
-  const byCollection = { events: [], projects: [], vehicles: [], announcements: [], recruitments: [], advisory: [], forms: [] };
+  const byCollection = { events: [], projects: [], vehicles: [], announcements: [], recruitments: [], advisory: [],faculty: [], forms: [] };
   for (const e of events.rows) byCollection.events.push({ id: e.id, ...(e.data || {}) });
   for (const v of vehicles.rows) byCollection.vehicles.push({ id: v.id, ...(v.data || {}) });
   for (const p of projects.rows) byCollection.projects.push({ id: p.id, ...(p.data || {}) });

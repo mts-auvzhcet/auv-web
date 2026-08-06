@@ -80,29 +80,31 @@ export default function Leadership() {
   // Advisory board is editable from the dashboard (Advisory tab). Each entry's
   // `role` field determines whether it's the Councilor or an Advisor — put
   // the exact word "Councilor" in the role for the one councilor, anything
-  // else (e.g. "Faculty Advisor") is treated as an advisor. `text` doubles
-  // as the councilor's quote/bio.
-  const advisoryDb = getCollection('advisory');
-  const dbCouncilor = advisoryDb.find((a) => /councilor/i.test(a.role || ''));
-  const dbAdvisors = advisoryDb.filter((a) => !/councilor/i.test(a.role || ''));
+  // else (e.g. "Faculty Advisor") is treated as an advisor. `bio` doubles
+  // as the councilor's quote/bio. `sort` (if set) orders the advisors list.
+  const facultyDb = getCollection('faculty');
+  const dbCouncilor = facultyDb.find((a) => /councilor/i.test(a.role || ''));
+  const dbAdvisors = facultyDb
+    .filter((a) => !/councilor/i.test(a.role || ''))
+    .sort((a, b) => (Number(a.sort) || 0) - (Number(b.sort) || 0));
 
   const councilorToShow = dbCouncilor
     ? {
         name: dbCouncilor.name,
         role: dbCouncilor.role,
         dept: dbCouncilor.dept || '',
-        img: dbCouncilor.imageBase64 || dbCouncilor.img || 'https://auvzhcet.vercel.app/Team/no.jpg',
-        bio: dbCouncilor.text || '',
+        img: dbCouncilor.img || dbCouncilor.imageBase64 || 'https://auvzhcet.vercel.app/Team/no.jpg',
+        bio: dbCouncilor.bio || '',
       }
-    : (isHydrated() && advisoryDb.length > 0 ? null : facultyCouncilor);
+    : (isHydrated() && facultyDb.length > 0 ? null : facultyCouncilor);
 
   const advisorsToShow = dbAdvisors.length > 0
     ? dbAdvisors.map((a) => ({
         name: a.name,
         dept: a.dept || '',
-        img: a.imageBase64 || a.img || 'https://auvzhcet.vercel.app/Team/no.jpg',
+        img: a.img || a.imageBase64 || 'https://auvzhcet.vercel.app/Team/no.jpg',
       }))
-    : (isHydrated() && advisoryDb.length > 0 ? [] : facultyAdvisors);
+    : (isHydrated() && facultyDb.length > 0 ? [] : facultyAdvisors);
 
   const team2026_27 = [
     { name: 'Mohd Ayaan Zafar', role: 'Chairperson (Management Affairs)', subteam: 'Management', img: 'https://auvzhcet.vercel.app/Team/ayan.jpg' },

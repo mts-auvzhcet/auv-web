@@ -30,7 +30,7 @@ app.use(
     credentials: true,
   }),
 );
-app.use(express.json({ limit: "10mb" }));
+app.use(express.json({ limit: "6mb" }));
 
 // Login/register are the most sensitive endpoints — cap attempts so they
 // can't be brute-forced. 20 requests per 15 minutes per IP is generous for
@@ -52,11 +52,25 @@ const generalLimiter = rateLimit({
   legacyHeaders: false,
 });
 
+// Recruitment/custom-form submissions are the one public, unauthenticated
+// WRITE endpoint on the whole API — anyone (including bots/scripts) can hit
+// it with no login. A real applicant submits once, maybe twice if they made
+// a mistake; 8 per hour per IP comfortably covers that while making it
+// pointless to script-spam junk submissions into the DB.
+const submissionLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 8,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Too many submissions from this device. Please try again later." },
+});
+
 app.get("/health", (_req, res) => res.json({ ok: true, ts: new Date().toISOString() }));
 
 app.use("/auth", authLimiter, authRoutes);
 app.use(generalLimiter);
 app.use("/users", users);
+app.post("/collections/recruitments", submissionLimiter);
 app.use("/collections", collections);
 app.use("/members", members);
 app.use("/sessions", sessions);

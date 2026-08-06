@@ -26,7 +26,7 @@ export const facultyConfig = {
   imageKey: "imageBase64",
   fields: [
     { key: "name", label: "Name", required: true },
-    { key: "role", label: "Role", required: true, placeholder: "Faculty Advisor / Faculty Councilor" },
+    { key: "role", label: "Role", required: true, placeholder: "Faculty Advisor / Faculty Councilor — use the word 'Councilor' for the one entry that should show as the Councilor" },
     { key: "dept", label: "Department" },
     { key: "img", label: "Image URL (or upload below)" },
     { key: "imageBase64", label: "Photo Upload", type: "file" },
@@ -92,15 +92,16 @@ export const announcementsConfig = {
 
 export const advisoryConfig = {
   name: "advisory",
-  label: "Advisory Board Member",
+  label: "Wisdom Slide (Home Page Quote)",
   titleKey: "name",
   subtitleKey: "role",
   imageKey: "imageBase64",
   fields: [
     { key: "name", label: "Name", required: true },
-    { key: "role", label: "Designation/Role (use the word 'Councilor' for the single Faculty Councilor entry — everyone else shows as a Faculty Advisor)", required: true },
-    { key: "dept", label: "Department", required: false },
-    { key: "imageBase64", label: "Member Image", type: "file" },
-    { key: "text", label: "Quote / Text (only shown for the Councilor)", textarea: true, required: false },
+    { key: "role", label: "Designation/Role", required: true },
+    { key: "imageBase64", label: "Photo", type: "file" },
+    { key: "text", label: "Quote / Text", textarea: true, required: true },
   ],
 };
+
+

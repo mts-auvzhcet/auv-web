@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Send, CheckCircle, Image as ImageIcon, AlertCircle } from 'lucide-react';
 import { addItem, getCollection, isHydrated } from '../lib/store';
+import { uploadImage } from '../lib/cloudinary';
 import { useStore } from '../lib/useStore';
 
 // Renders any form created in Dashboard → Forms → Custom Builders, dynamically
@@ -22,16 +23,23 @@ export default function CustomForm() {
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [uploadingField, setUploadingField] = useState(null);
 
   const handleChange = (fieldId, value) => {
     setFormData((prev) => ({ ...prev, [fieldId]: value }));
   };
 
-  const handleImageChange = (fieldId, file) => {
+  const handleImageChange = async (fieldId, file) => {
     if (!file) return;
-    const reader = new FileReader();
-    reader.onloadend = () => handleChange(fieldId, reader.result);
-    reader.readAsDataURL(file);
+    setUploadingField(fieldId);
+    try {
+      const url = await uploadImage(file);
+      handleChange(fieldId, url);
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setUploadingField(null);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -166,7 +174,9 @@ export default function CustomForm() {
                     htmlFor={`img-${field.id}`}
                     className="flex items-center justify-center gap-3 bg-black/40 border border-zinc-800 border-dashed rounded-xl p-6 cursor-pointer hover:border-sky-500/40 transition-all"
                   >
-                    {formData[field.id] ? (
+                    {uploadingField === field.id ? (
+                      <span className="text-[10px] font-bold text-sky-400 uppercase animate-pulse">Uploading...</span>
+                    ) : formData[field.id] ? (
                       <img src={formData[field.id]} alt="Preview" className="w-20 h-20 object-cover rounded-lg" />
                     ) : (
                       <>
@@ -199,7 +209,7 @@ export default function CustomForm() {
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || !!uploadingField}
             className="flex items-center justify-center gap-2 bg-sky-500 hover:bg-sky-400 disabled:opacity-50 text-white py-3.5 rounded-2xl text-sm font-bold transition-all"
           >
             <Send size={16} /> {loading ? 'Submitting...' : 'Submit'}

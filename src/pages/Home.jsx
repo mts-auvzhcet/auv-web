@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Compass, Anchor, Cpu, Navigation, ChevronRight, ArrowRight, ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getCollection, addItem } from '../lib/store';
+import { uploadImage } from '../lib/cloudinary';
 import SplitText from '../components/SplitText';
 import { useStore } from '../lib/useStore';
 
@@ -10,15 +11,23 @@ function OpenFormCard({ form }) {
   const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [uploadingField, setUploadingField] = useState(null);
 
   const setField = (key, value) => setAnswers((prev) => ({ ...prev, [key]: value }));
 
-  const handleImageField = (key, e) => {
+  const handleImageField = async (key, e) => {
     const file = e.target.files[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onloadend = () => setField(key, reader.result);
-    reader.readAsDataURL(file);
+    setUploadingField(key);
+    try {
+      const url = await uploadImage(file);
+      setField(key, url);
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setUploadingField(null);
+      e.target.value = '';
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -70,13 +79,17 @@ function OpenFormCard({ form }) {
                 className="bg-black/30 border border-zinc-800 rounded-lg px-3 py-2.5 text-sm text-white outline-none focus:border-sky-500/60 resize-y"
               />
             ) : field.type === 'image' ? (
-              <input
-                type="file"
-                accept="image/*"
-                required={field.required && !answers[field.id]}
-                onChange={(e) => handleImageField(field.id, e)}
-                className="text-sm text-zinc-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-sky-500/10 file:text-sky-400"
-              />
+              <>
+                <input
+                  type="file"
+                  accept="image/*"
+                  disabled={uploadingField === field.id}
+                  required={field.required && !answers[field.id]}
+                  onChange={(e) => handleImageField(field.id, e)}
+                  className="text-sm text-zinc-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-sky-500/10 file:text-sky-400 disabled:opacity-50"
+                />
+                {uploadingField === field.id && <span className="text-[10px] text-sky-400 animate-pulse block mt-1">Uploading...</span>}
+              </>
             ) : (
               <input
                 type="text"
@@ -90,7 +103,7 @@ function OpenFormCard({ form }) {
         ))}
       <button
         type="submit"
-        disabled={submitting}
+        disabled={submitting || !!uploadingField}
         className="self-start bg-sky-500 hover:bg-sky-400 disabled:opacity-50 text-white font-space font-bold uppercase tracking-wider text-xs py-2.5 px-5 rounded-lg transition-colors"
       >
         {submitting ? 'Submitting...' : 'Submit'}

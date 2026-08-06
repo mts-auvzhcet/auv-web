@@ -17,6 +17,7 @@ import {
   eventsConfig,
   projectsConfig,
   advisoryConfig,
+  facultyConfig,
   vehiclesConfig,
 } from "../../components/dashboard/configs";
 
@@ -27,7 +28,8 @@ const TABS = [
   { id: "vehicles", label: "Vehicles", icon: <Truck size={14} /> },
   { id: "forms", label: "Forms", icon: <FileSpreadsheet size={14} /> },
   { id: "recruitments", label: "Recruitments", icon: <FileSpreadsheet size={14} /> },
-  { id: "advisory", label: "Advisory", icon: <Users size={14} /> },
+  { id: "faculty", label: "Faculty", icon: <Users size={14} /> },
+  { id: "advisory", label: "Wisdom Quotes", icon: <Users size={14} /> },
   { id: "seed", label: "Seed DB", icon: <Database size={14} /> },
 ];
 
@@ -48,6 +50,7 @@ export default function DevDashboard() {
       {tab === "vehicles" && <CollectionManager config={vehiclesConfig} />}
       {tab === "forms" && <FormsManager />}
       {tab === "recruitments" && <RecruitmentsManager />}
+      {tab === "faculty" && <CollectionManager config={facultyConfig} />}
       {tab === "advisory" && <CollectionManager config={advisoryConfig} />}
       {tab === "seed" && <DbSeeder />}
     </DashboardShell>

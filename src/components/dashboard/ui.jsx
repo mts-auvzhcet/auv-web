@@ -1,36 +1,42 @@
+import { useState } from "react";
 import { Pencil, Trash2 } from "lucide-react";
+import { uploadImage } from "../../lib/cloudinary";
 
 export function Field({ label, value, onChange, type = "text", textarea, placeholder, required }) {
-  const handleFileChange = (e) => {
+  const [uploading, setUploading] = useState(false);
+
+  const handleFileChange = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        onChange(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
+    if (!file) {
       onChange("");
+      return;
+    }
+    setUploading(true);
+    try {
+      const url = await uploadImage(file);
+      onChange(url);
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setUploading(false);
+      e.target.value = "";
     }
   };
 
-  const handleMultiFileChange = (e) => {
+  const handleMultiFileChange = async (e) => {
     const files = Array.from(e.target.files || []);
     if (!files.length) return;
-    Promise.all(
-      files.map(
-        (file) =>
-          new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onloadend = () => resolve(reader.result);
-            reader.readAsDataURL(file);
-          })
-      )
-    ).then((results) => {
+    setUploading(true);
+    try {
+      const urls = await Promise.all(files.map(uploadImage));
       const current = Array.isArray(value) ? value : [];
-      onChange([...current, ...results]);
-    });
-    e.target.value = "";
+      onChange([...current, ...urls]);
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setUploading(false);
+      e.target.value = "";
+    }
   };
 
   const removeImageAt = (idx) => {
@@ -54,16 +60,18 @@ export function Field({ label, value, onChange, type = "text", textarea, placeho
         />
       ) : type === "file" ? (
         <div className="flex items-center gap-4">
-          {value && typeof value === 'string' && value.startsWith('data:image') && (
+          {value && typeof value === 'string' && (
             <img src={value} alt="Preview" className="w-12 h-12 object-cover rounded border border-zinc-700" />
           )}
           <input
             type="file"
             accept="image/*"
             onChange={handleFileChange}
+            disabled={uploading}
             required={required && !value}
-            className="text-sm text-zinc-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-sky-500/10 file:text-sky-400 hover:file:bg-sky-500/20 cursor-pointer"
+            className="text-sm text-zinc-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-sky-500/10 file:text-sky-400 hover:file:bg-sky-500/20 cursor-pointer disabled:opacity-50"
           />
+          {uploading && <span className="text-[10px] text-sky-400 animate-pulse">Uploading...</span>}
         </div>
       ) : type === "files" ? (
         <div className="flex flex-col gap-2">
@@ -72,8 +80,10 @@ export function Field({ label, value, onChange, type = "text", textarea, placeho
             accept="image/*"
             multiple
             onChange={handleMultiFileChange}
-            className="text-sm text-zinc-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-sky-500/10 file:text-sky-400 hover:file:bg-sky-500/20 cursor-pointer"
+            disabled={uploading}
+            className="text-sm text-zinc-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-sky-500/10 file:text-sky-400 hover:file:bg-sky-500/20 cursor-pointer disabled:opacity-50"
           />
+          {uploading && <span className="text-[10px] text-sky-400 animate-pulse">Uploading...</span>}
           {Array.isArray(value) && value.length > 0 && (
             <div className="flex flex-wrap gap-2 mt-1">
               {value.map((img, idx) => (

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Trash2, ChevronDown, ChevronRight, Mail, Phone, Plus, Settings, Eye, ToggleLeft, ToggleRight, Image as ImageIcon, Type, List, Download, X, MoreVertical, Layers, CheckCircle, Clock } from "lucide-react";
 import { getCollection, addItem, updateItem, deleteItem } from "../../lib/store";
+import { uploadImage } from "../../lib/cloudinary";
 import { useStore } from "../../lib/useStore";
 import { useAuth } from "../../context/AuthContext";
 
@@ -69,6 +70,7 @@ export default function FormsManager() {
   const [editingForm, setEditingForm] = useState(null);
   const [showFieldModal, setShowFieldModal] = useState(false);
   const [newField, setNewField] = useState({ label: "", type: "text", required: false, displayImage: "" });
+  const [uploadingDisplayImg, setUploadingDisplayImg] = useState(false);
 
   const createForm = () => {
     const title = window.prompt("Enter form title (e.g., 'Workshop 2026'):");
@@ -143,14 +145,18 @@ export default function FormsManager() {
     updateItem("forms", editingForm.id, updated, user);
   };
 
-  const handleDisplayImageUpload = (e) => {
+  const handleDisplayImageUpload = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setNewField(prev => ({ ...prev, displayImage: reader.result }));
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+    setUploadingDisplayImg(true);
+    try {
+      const url = await uploadImage(file);
+      setNewField(prev => ({ ...prev, displayImage: url }));
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setUploadingDisplayImg(false);
+      e.target.value = "";
     }
   };
 
@@ -478,7 +484,9 @@ export default function FormsManager() {
                   <label className="text-[10px] font-bold text-zinc-500 uppercase font-space tracking-widest">Instructional Image</label>
                   <input type="file" accept="image/*" onChange={handleDisplayImageUpload} className="hidden" id="display-img-upload" />
                   <label htmlFor="display-img-upload" className="flex items-center justify-center gap-3 bg-black/40 border border-zinc-800 border-dashed rounded-xl p-6 cursor-pointer hover:border-sky-500/40 transition-all">
-                    {newField.displayImage ? (
+                    {uploadingDisplayImg ? (
+                      <span className="text-[10px] font-bold text-sky-400 uppercase animate-pulse">Uploading...</span>
+                    ) : newField.displayImage ? (
                       <img src={newField.displayImage} alt="Preview" className="w-20 h-20 object-cover rounded-lg" />
                     ) : (
                       <><ImageIcon size={20} className="text-zinc-600"/> <span className="text-[10px] font-bold text-zinc-500 uppercase">Upload Pic</span></>
