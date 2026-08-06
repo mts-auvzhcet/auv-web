@@ -209,7 +209,7 @@ export default function Footer() {
             {/* Social icons row */}
             <div className="flex items-center gap-3 mt-2">
               <a
-                href="https://www.linkedin.com/company/auv-zhcet/"
+                href="https://www.linkedin.com/in/mts-auv-zhcet/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-8 h-8 rounded-full bg-zinc-950 border border-zinc-900 hover:border-sky-500/40 hover:text-sky-400 flex items-center justify-center text-zinc-400 transition-all duration-300"
@@ -244,7 +244,7 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="https://github.com/mts-auvzhcet"
+                href="https://github.com/auvzhcet"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-8 h-8 rounded-full bg-zinc-950 border border-zinc-900 hover:border-sky-500/40 hover:text-sky-400 flex items-center justify-center text-zinc-400 transition-all duration-300"
