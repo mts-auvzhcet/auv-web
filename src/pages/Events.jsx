@@ -89,7 +89,7 @@ export default function Events() {
       ? e.images
       : e.imageBase64
       ? [e.imageBase64]
-      : (e.images || e.imageUrl || '').split(',').map((s) => s.trim()).filter(Boolean),
+      : (typeof e.images === 'string' ? e.images : (e.imageUrl || '')).split(',').map((s) => s.trim()).filter(Boolean),
     createdAt: e.createdAt,
   }));
   const events = [...storeEvents].sort((a, b) => {
