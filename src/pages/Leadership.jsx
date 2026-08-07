@@ -341,11 +341,6 @@ export default function Leadership() {
                     <p className="text-zinc-500 text-[10px] font-medium font-apple tracking-wide uppercase mt-1">
                       {stud.role}
                     </p>
-                    {stud.oneLiner && (
-                      <p className="text-zinc-400 text-[9px] mt-1 font-light italic line-clamp-2">
-                        "{stud.oneLiner}"
-                      </p>
-                    )}
                   </div>
                 </div>
 
@@ -356,6 +351,11 @@ export default function Leadership() {
                       {stud.subteam} Team
                     </div>
                     <h3 className="font-bold text-white text-sm sm:text-base leading-snug">{stud.name}</h3>
+                    {stud.oneLiner && (
+                      <p className="text-zinc-400 text-xs italic font-light px-1 leading-relaxed line-clamp-4">
+                         "{stud.oneLiner}"
+                      </p>
+                    )}
                   </div>
 
                   {/* Email Profile Placeholder */}
