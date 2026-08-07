@@ -361,7 +361,7 @@ export default function Leadership() {
                   </div>
 
                   {/* Email Profile Placeholder */}
-                  <div className="flex flex-col border-t border-zinc-800 pt-3 w-full mt-auto text-left">
+                  <div className="flex flex-col border-t border-zinc-800 pt-3 w-full w-full text-left">
                     <span className="text-[10px] font-space text-sky-500 font-bold uppercase tracking-widest block mb-4">
                       Contact Details
                     </span>
