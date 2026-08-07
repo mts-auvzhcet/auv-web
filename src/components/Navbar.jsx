@@ -24,7 +24,7 @@ export default function Navbar() {
   }, [location.pathname]);
 
   const navLinks = [
-    { name: 'Members', path: '/leadership' },
+    { name: 'Leadership', path: '/leadership' },
     { name: 'Project', path: '/projects' },
     { name: 'Event', path: '/events' },
     { name: 'Recruitment', path: '/recruitment' },
