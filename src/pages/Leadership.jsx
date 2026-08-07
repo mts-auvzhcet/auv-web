@@ -352,9 +352,11 @@ export default function Leadership() {
                     </div>
                     <h3 className="font-bold text-white text-sm sm:text-base leading-snug">{stud.name}</h3>
                     {stud.oneLiner && (
-                      <p className="text-zinc-400 text-xs italic font-light px-1 leading-relaxed line-clamp-4">
-                         "{stud.oneLiner}"
-                      </p>
+                      <div className="flex-1 w-full flex items-center justify-center px-1">
+                        <p className="text-zinc-400 text-xs italic font-light leading-relaxed line-clamp-4">
+                          "{stud.oneLiner}"
+                        </p>
+                      </div>
                     )}
                   </div>
 
