@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Calendar, ArrowRight, GraduationCap } from 'lucide-react';
 import { getCollection, isHydrated } from '../lib/store';
 import { useStore } from '../lib/useStore';
+import { HexagonBackground } from '@/components/animate-ui/components/backgrounds/hexagon';
 
 export default function Workshops() {
   useStore();
@@ -39,9 +40,11 @@ export default function Workshops() {
   }
 
   return (
-    <div className="bg-gradient-to-b from-[#0f172a] via-[#18181b] to-[#111827] text-white pt-24 pb-20 min-h-screen font-poppins">
-      <div className="max-w-6xl mx-auto px-6 md:px-8">
-        <div className="flex flex-col mb-16 border-b border-white/10 pb-6">
+    <div className="bg-gradient-to-b from-[#0f172a] via-[#18181b] to-[#111827] text-white pt-24 pb-20 min-h-screen font-poppins relative selection:bg-blue-500/30">
+      <HexagonBackground className="fixed inset-0 w-full h-full opacity-30" />
+      
+      <div className="max-w-6xl mx-auto px-6 md:px-8 relative z-10 pointer-events-none">
+        <div className="flex flex-col mb-16 border-b border-white/10 pb-6 pointer-events-auto">
           <span className="text-zinc-400 font-space text-xs sm:text-sm font-semibold tracking-wider uppercase mb-2">
             Learn With Us
           </span>
@@ -54,9 +57,9 @@ export default function Workshops() {
         </div>
 
         {workshops.length === 0 ? (
-          <p className="text-zinc-600 text-sm italic text-center py-16">No workshops posted yet — check back soon.</p>
+          <p className="text-zinc-600 text-sm italic text-center py-16 pointer-events-auto">No workshops posted yet — check back soon.</p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pointer-events-auto">
             {workshops.map((w, idx) => (
               <motion.div
                 key={w.id}

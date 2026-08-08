@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { getMembers, getDB, isHydrated, getCollection } from '../lib/store';
 import { useStore } from '../lib/useStore';
+import { HexagonBackground } from '@/components/animate-ui/components/backgrounds/hexagon';
 
 // Map a store member record (name, designation, imageUrl, branch, oneLiner)
 // into the shape this page renders (name, role, subteam, img).
@@ -213,10 +215,18 @@ export default function Leadership() {
   };
 
   return (
-    <div className="bg-gradient-to-b from-[#111827] via-[#090d16] to-[#020617] text-gray-100 min-h-screen pt-24 pb-16 px-4 md:px-8 font-poppins selection:bg-blue-500/30">
+    <div className="bg-gradient-to-b from-[#111827] via-[#090d16] to-[#020617] text-gray-100 min-h-screen pt-24 pb-16 px-4 md:px-8 font-poppins selection:bg-blue-500/30 relative">
+      <HexagonBackground className="fixed inset-0 w-full h-full opacity-30" />
       
-      {/* Title */}
-      <div className="max-w-4xl mx-auto text-center mb-16">
+      <div className="relative z-10 pointer-events-none">
+        {/* Title */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="max-w-4xl mx-auto text-center mb-16 pointer-events-auto"
+        >
         <div className="text-zinc-400 text-xs font-semibold tracking-wider font-space uppercase mb-2">
           MTS AUV-ZHCET Club
         </div>
@@ -226,10 +236,16 @@ export default function Leadership() {
         <p className="text-zinc-550 text-xs sm:text-sm font-light max-w-xl mx-auto leading-relaxed">
           The brilliant minds driving the research, engineering, and operational management of our Autonomous Underwater Vehicles.
         </p>
-      </div>
+      </motion.div>
 
       {/* 1. SEPARATE FACULTY SECTION (Top Column) */}
-      <div className="max-w-7xl mx-auto mb-20 bg-zinc-950/40 border border-zinc-900 rounded-3xl p-6 md:p-10 shadow-2xl">
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.7 }}
+        className="max-w-7xl mx-auto mb-20 bg-zinc-950/40 border border-zinc-900 rounded-3xl p-6 md:p-10 shadow-2xl pointer-events-auto"
+      >
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-16">
           
           {/* Faculty Councilor */}
@@ -279,11 +295,17 @@ export default function Leadership() {
           </div>
 
         </div>
-      </div>
+      </motion.div>
 
       {/* 2. STUDENT LEADS SECTION & DROPDOWN SWITCHER */}
-      <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-center border-b border-zinc-900 pb-6 mb-10 gap-6">
+      <div className="max-w-7xl mx-auto pointer-events-auto">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col md:flex-row justify-between items-center border-b border-zinc-900 pb-6 mb-10 gap-6"
+        >
           <h2 className="text-2xl font-bold font-poppins text-white flex items-center gap-2">
             Student Team
             <span className="text-blue-400 text-sm font-mono bg-blue-950 px-2.5 py-0.5 rounded border border-blue-900/60">
@@ -311,7 +333,7 @@ export default function Leadership() {
               </button>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* 3. 3D FLIP CARD GRID */}
         {getActiveTeamList() === null ? (
@@ -322,7 +344,14 @@ export default function Leadership() {
         ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 justify-center">
           {getActiveTeamList().map((stud, idx) => (
-            <div key={idx} className="flip-card w-full aspect-[0.72] max-w-[210px] mx-auto group">
+            <motion.div 
+              key={idx} 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: (idx % 5) * 0.1 }}
+              className="flip-card w-full aspect-[0.72] max-w-[210px] mx-auto group"
+            >
               <div className="flip-card-inner w-full h-full">
                 
                 {/* CARD FRONT */}
@@ -380,14 +409,20 @@ export default function Leadership() {
                 </div>
 
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
         )}
 
       {/* 4. SPONSORS & BENEFACTORS */}
-      <div className="max-w-7xl mx-auto mt-32 mb-10">
-        <div className="flex flex-col items-center justify-center mb-16 text-center">
+      <div className="max-w-7xl mx-auto mt-32 mb-10 pointer-events-auto">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col items-center justify-center mb-16 text-center"
+        >
           <p className="text-cyan-400 font-space text-xs sm:text-sm font-bold tracking-[0.25em] uppercase mb-3">
             Innovation Backers
           </p>
@@ -397,7 +432,7 @@ export default function Leadership() {
           <p className="text-slate-400 text-sm max-w-2xl font-light mt-4 leading-relaxed font-outfit">
             We are deeply grateful to the institutions and corporations whose support drives our engineering innovations.
           </p>
-        </div>
+        </motion.div>
 
         {/* Primary Benefactors */}
         <div className="w-full mb-16">
@@ -406,7 +441,14 @@ export default function Leadership() {
           </h3>
           <div className="grid gap-8 max-w-2xl mx-auto grid-cols-1 sm:grid-cols-2">
             {supporters.map((item, idx) => (
-              <div key={idx} className="group rounded-3xl bg-zinc-950/40 border border-zinc-900 hover:border-sky-500/20 transition-all duration-350 overflow-hidden flex flex-col justify-between backdrop-blur-sm">
+              <motion.div 
+                key={idx} 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                className="group rounded-3xl bg-zinc-950/40 border border-zinc-900 hover:border-sky-500/20 transition-all duration-350 overflow-hidden flex flex-col justify-between backdrop-blur-sm"
+              >
                 <div className="p-8 h-40 flex items-center justify-center bg-zinc-900/10">
                   <img alt={item.name} loading="lazy" className="max-h-full max-w-full object-contain transition-all duration-500" src={item.img} />
                 </div>
@@ -414,7 +456,7 @@ export default function Leadership() {
                   <span className="text-[9px] font-space text-cyan-400 tracking-widest uppercase font-bold">{item.type}</span>
                   <p className="text-sm font-bold text-zinc-300 mt-1 uppercase">{item.name}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -426,7 +468,14 @@ export default function Leadership() {
           </h3>
           <div className="grid gap-6 grid-cols-2 lg:grid-cols-4">
             {sponsors.map((item, idx) => (
-              <div key={idx} className="group rounded-2xl bg-zinc-950/40 border border-zinc-900 hover:border-sky-500/20 transition-all duration-350 overflow-hidden flex flex-col justify-between backdrop-blur-sm">
+              <motion.div 
+                key={idx} 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: idx * 0.1 }}
+                className="group rounded-2xl bg-zinc-950/40 border border-zinc-900 hover:border-sky-500/20 transition-all duration-350 overflow-hidden flex flex-col justify-between backdrop-blur-sm"
+              >
                 <div className="p-6 h-32 flex items-center justify-center bg-zinc-900/10">
                   <img alt={item.name} loading="lazy" className="max-h-full max-w-full object-contain transition-all duration-500" src={item.img} />
                 </div>
@@ -434,10 +483,11 @@ export default function Leadership() {
                   <span className="text-[8px] font-space text-cyan-400 tracking-wider uppercase font-bold block">{item.type}</span>
                   <p className="text-xs font-bold text-zinc-400 mt-1 uppercase">{item.name}</p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
+      </div>
       </div>
       </div>
 

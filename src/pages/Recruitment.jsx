@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ShieldCheck, Send, Calendar, Users, HelpCircle, FileText, Globe, Upload, CheckCircle, Info, Clock } from 'lucide-react';
 import { addItem, getCollection, isHydrated } from '../lib/store';
 import { useStore } from '../lib/useStore';
+import { HexagonBackground } from '@/components/animate-ui/components/backgrounds/hexagon';
 
 export default function Recruitment() {
   useStore();
@@ -58,10 +59,11 @@ export default function Recruitment() {
 
   return (
     <div className="bg-gradient-to-b from-[#0c4a6e] via-[#0f172a] to-[#020617] text-white pt-28 pb-20 min-h-screen font-poppins relative selection:bg-blue-500/30 overflow-hidden">
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-0"></div>
+      <HexagonBackground className="fixed inset-0 w-full h-full opacity-30" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-[1]"></div>
 
-      <div className="max-w-6xl mx-auto px-6 relative z-10">
-        <div className="flex flex-col mb-16 border-b border-white/10 pb-6">
+      <div className="max-w-6xl mx-auto px-6 relative z-10 pointer-events-none">
+        <div className="flex flex-col mb-16 border-b border-white/10 pb-6 pointer-events-auto">
           <span className="text-zinc-400 font-space text-xs sm:text-sm font-semibold tracking-wider uppercase mb-2">Join the Crew</span>
           <h1 className="text-4xl md:text-5xl font-black font-outfit text-white tracking-wide uppercase">MTS AUV Recruitment Portal</h1>
           <p className="text-slate-350 text-sm sm:text-base font-light mt-3 leading-relaxed max-w-xl">
@@ -69,7 +71,7 @@ export default function Recruitment() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-20">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-20 pointer-events-auto">
           <div className="lg:col-span-5 flex flex-col gap-10">
             <div className="flex flex-col gap-4">
               <h2 className="text-2xl font-bold font-outfit uppercase tracking-wider text-white">About Recruitment</h2>

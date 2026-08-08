@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, Users, Cpu, ShieldCheck, ArrowRight, X } from 'lucide-react';
 import { getCollection, isHydrated } from '../lib/store';
 import { useStore } from '../lib/useStore';
+import { HexagonBackground } from '@/components/animate-ui/components/backgrounds/hexagon';
 
 export default function Projects() {
   useStore();
@@ -89,11 +90,12 @@ export default function Projects() {
 
   return (
     <div className="bg-gradient-to-b from-[#0c4a6e] via-[#0f172a] to-[#020617] text-white pt-24 pb-20 min-h-screen font-poppins relative selection:bg-blue-500/30">
+      <HexagonBackground className="fixed inset-0 w-full h-full opacity-30" />
       
-      <div className="max-w-6xl mx-auto px-6 md:px-8">
+      <div className="max-w-6xl mx-auto px-6 md:px-8 relative z-10 pointer-events-none">
         
         {/* Header Section */}
-        <div className="flex flex-col mb-16 border-b border-white/10 pb-6">
+        <div className="flex flex-col mb-16 border-b border-white/10 pb-6 pointer-events-auto">
           <span className="text-zinc-400 font-space text-xs sm:text-sm font-semibold tracking-wider uppercase mb-2">
             Engineering Milestones
           </span>
@@ -106,7 +108,7 @@ export default function Projects() {
         </div>
 
         {/* Alternate Left-Right Layout List */}
-        <div className="flex flex-col gap-28">
+        <div className="flex flex-col gap-28 pointer-events-auto">
           {projects.map((project, idx) => {
             const isEven = idx % 2 === 0;
             return (

@@ -6,6 +6,7 @@ import { getCollection, addItem } from '../lib/store';
 import { uploadImage } from '../lib/cloudinary';
 import SplitText from '../components/SplitText';
 import { useStore } from '../lib/useStore';
+import { GravityStarsBackground } from '@/components/animate-ui/components/backgrounds/gravity-stars';
 
 function OpenFormCard({ form }) {
   const [answers, setAnswers] = useState({});
@@ -317,6 +318,9 @@ export default function Home() {
           being stretched thin across the entire (much taller) page. */}
       <div className="fixed inset-0 -z-10 bg-gradient-to-b from-[#f0f9ff] via-[#bae6fd] via-[#0284c7] via-[#0c4a6e] via-[#0f172a] via-[#111827] to-[#020617]" />
       
+      {/* Gravity Stars Background effect (Pointer events none so it doesn't block clicks, but reacts to window mouse events) */}
+      <GravityStarsBackground className="fixed inset-0 w-full h-full z-[1] text-white opacity-60 pointer-events-none" />
+      
       {/* Fixed Submarine Depth Gauge (renders ONLY on Home page) */}
       {/* <DepthGauge /> */}
 
@@ -332,24 +336,32 @@ export default function Home() {
       <section className="min-h-screen w-full flex items-center justify-center relative overflow-hidden px-6 pt-20">
         
         {/* Background Video */}
-        <video 
+        <motion.video 
+          initial={{ opacity: 0, scale: 1.1 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.5, ease: 'easeOut' }}
           autoPlay 
           loop 
           muted 
           playsInline 
-          className="absolute inset-0 w-full h-full object-cover z-0"
+          className="absolute inset-0 w-full h-full object-cover z-[5]"
         >
           <source src="/AUV_Animation.mp4" type="video/mp4" />
-        </video>
+        </motion.video>
 
         {/* Gradient Overlay for blending */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-[#0a0f1d] z-0"></div>
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.2, delay: 0.3 }}
+          className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-[#0a0f1d] z-[6]"
+        ></motion.div>
 
         <div className="max-w-4xl text-center flex flex-col gap-6 relative z-10">
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
+            transition={{ duration: 1, delay: 0.6, ease: 'easeOut' }}
             className="flex flex-col gap-4"
           >
             <span className="text-sky-400 font-space text-xs font-semibold tracking-wider uppercase block">
@@ -360,7 +372,7 @@ export default function Home() {
               text="MTS AUV ZHCET"
               className="text-6xl sm:text-8xl font-black font-outfit text-white tracking-tight leading-none uppercase drop-shadow-2xl"
               splitType="chars"
-              delay={40}
+              delay={50}
               duration={0.8}
               ease="power3.out"
               from={{ opacity: 0, y: 40 }}
@@ -368,16 +380,27 @@ export default function Home() {
               threshold={0.1}
               textAlign="center"
             />
-            <p className="text-zinc-200 text-sm sm:text-base font-light max-w-xl mx-auto leading-relaxed mt-2 drop-shadow-md">
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1, delay: 1.2 }}
+              className="text-zinc-200 text-sm sm:text-base font-light max-w-xl mx-auto leading-relaxed mt-2 drop-shadow-md"
+            >
               Designing, building, and deploying advanced autonomous underwater vehicles at Aligarh Muslim University.
-            </p>
+            </motion.p>
           </motion.div>
         </div>
       </section>
 
       {/* 2. ABOUT US SECTION (Sunlight to Twilight Transition) */}
       <section className="py-32 px-6 max-w-6xl mx-auto z-10 relative">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7 }}
+          className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start"
+        >
           
           <div className="lg:col-span-12 flex flex-col gap-6 text-white">
             <div>
@@ -401,22 +424,34 @@ export default function Home() {
             </div>
           </div>
 
-        </div>
+        </motion.div>
       </section>
 
       {/* 3. VEHICLES SECTION (Cinematic presentation panels - Deep Ocean Navy) */}
       <section className="py-32 border-t border-white/5 relative z-10 text-white bg-black/20">
         
-        <div className="max-w-6xl mx-auto px-6 mb-16">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7 }}
+          className="max-w-6xl mx-auto px-6 mb-16"
+        >
           <span className="text-sky-400 font-space text-xs font-semibold tracking-wider uppercase block mb-1">
             Engineering Fleet
           </span>
           <h2 className="font-black font-outfit text-4xl sm:text-5xl uppercase tracking-wider">
             Vehicle Showcases
           </h2>
-        </div>
+        </motion.div>
 
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-10"
+        >
           
           {/* Desktop list selector */}
           <div className="hidden lg:flex lg:col-span-3 flex-col gap-2">
@@ -615,16 +650,28 @@ export default function Home() {
           </AnimatePresence>
         </div>
 
-        </div>
+        </motion.div>
       </section>
 
       {/* 4. ADVISORY BOARD (Slow Auto-Sliding Carousel) */}
       <section className="py-28 relative z-10 bg-black/20 text-white">
-        <h1 className="text-center font-bold font-outfit text-4xl sm:text-5xl tracking-tight leading-none mb-16">
+        <motion.h1 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7 }}
+          className="text-center font-bold font-outfit text-4xl sm:text-5xl tracking-tight leading-none mb-16"
+        >
           Words of Wisdom by our very own!
-        </h1>
+        </motion.h1>
 
-        <div className="relative w-full max-w-5xl mx-auto px-4 min-h-[400px] flex items-center justify-center">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="relative w-full max-w-5xl mx-auto px-4 min-h-[400px] flex items-center justify-center"
+        >
           {wisdomSlides.map((slide, idx) => (
             <div
               key={idx}
@@ -658,16 +705,28 @@ export default function Home() {
               </div>
             </div>
           ))}
-        </div>
+        </motion.div>
       </section>
 
       {/* 5. LATEST NEWS ACCORDION */}
       <section className="py-28 px-6 max-w-3xl mx-auto relative z-10 border-t border-white/5 text-white">
-        <h1 className="text-center font-bold font-outfit text-3xl uppercase tracking-wider mb-10">
+        <motion.h1 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7 }}
+          className="text-center font-bold font-outfit text-3xl uppercase tracking-wider mb-10"
+        >
           Latest News
-        </h1>
+        </motion.h1>
 
-        <div className="border border-zinc-900/80 rounded-xl overflow-hidden bg-zinc-950/60">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="border border-zinc-900/80 rounded-xl overflow-hidden bg-zinc-950/60"
+        >
           {newsItems.map((item, idx) => {
             const isOpen = openAccordion === item.id;
             return (
@@ -699,10 +758,16 @@ export default function Home() {
               <ArrowRight size={14} />
             </Link>
           ))}
-        </div>
+        </motion.div>
 
         {/* Career / Recruitment CTA */}
-        <div className="mt-16 flex flex-col items-center gap-4 text-center">
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="mt-16 flex flex-col items-center gap-4 text-center"
+        >
           <p className="text-zinc-400 text-xs sm:text-sm font-light font-outfit">
             Want to build the future of marine robotics? We are recruiting.
           </p>
@@ -712,7 +777,7 @@ export default function Home() {
           >
             Apply Now
           </Link>
-        </div>
+        </motion.div>
       </section>
 
     </div>

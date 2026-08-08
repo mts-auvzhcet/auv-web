@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, Eye, FileText, ChevronLeft, ChevronRight, X, Award, MapPin, Sparkles } from 'lucide-react';
 import { getCollection, isHydrated } from '../lib/store';
 import { useStore } from '../lib/useStore';
+import { HexagonBackground } from '@/components/animate-ui/components/backgrounds/hexagon';
 
 export default function Events() {
   useStore();
@@ -133,11 +134,12 @@ export default function Events() {
 
   return (
     <div className="bg-gradient-to-b from-[#0f172a] via-[#18181b] to-[#111827] text-white pt-24 pb-20 min-h-screen font-poppins relative selection:bg-blue-500/30">
+      <HexagonBackground className="fixed inset-0 w-full h-full opacity-30" />
       
-      <div className="max-w-6xl mx-auto px-6 md:px-8">
+      <div className="max-w-6xl mx-auto px-6 md:px-8 relative z-10 pointer-events-none">
         
         {/* Header Section */}
-        <div className="flex flex-col mb-16 border-b border-white/10 pb-6">
+        <div className="flex flex-col mb-16 border-b border-white/10 pb-6 pointer-events-auto">
           <span className="text-zinc-400 font-space text-xs sm:text-sm font-semibold tracking-wider uppercase mb-2">
             Historical Timeline
           </span>
@@ -150,7 +152,7 @@ export default function Events() {
         </div>
 
         {/* Timeline Line */}
-        <div className="flex flex-col gap-24 relative pl-8 border-l border-zinc-800/80">
+        <div className="flex flex-col gap-24 relative pl-8 border-l border-zinc-800/80 pointer-events-auto">
           {events.map((event, idx) => (
             <motion.div
               initial={{ opacity: 0, y: 15 }}
