@@ -689,26 +689,16 @@ export default function Home() {
             );
           })}
 
-          {openCustomForms.map((form) => {
-            const isOpen = openAccordion === form.id;
-            return (
-              <div key={form.id} className="border-b border-zinc-900 last:border-0">
-                <button
-                  type="button"
-                  onClick={() => setOpenAccordion(isOpen ? null : form.id)}
-                  className="w-full flex items-center justify-between p-5 text-left text-zinc-350 hover:text-white font-space font-bold text-sm uppercase tracking-wider"
-                >
-                  <span>{form.title}</span>
-                  <ChevronRight size={14} className={`transition-transform duration-300 ${isOpen ? 'rotate-90 text-sky-400' : ''}`} />
-                </button>
-                {isOpen && (
-                  <div className="border-t border-zinc-900/60 p-5 bg-black/20">
-                    <OpenFormCard form={form} />
-                  </div>
-                )}
-              </div>
-            );
-          })}
+          {openCustomForms.map((form) => (
+            <Link
+              key={form.id}
+              to={`/forms/${form.id}`}
+              className="w-full flex items-center justify-between p-5 text-left text-zinc-350 hover:text-white font-space font-bold text-sm uppercase tracking-wider border-b border-zinc-900 last:border-0 transition-colors"
+            >
+              <span>{form.title}</span>
+              <ArrowRight size={14} />
+            </Link>
+          ))}
         </div>
 
         {/* Career / Recruitment CTA */}
