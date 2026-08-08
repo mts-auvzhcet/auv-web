@@ -13,6 +13,7 @@ const LABELS = {
   recruitments: "Recruitment",
   advisory: "Advisory Board Member",
   faculty: "Faculty",
+  workshops: "Workshop",
   forms: "Form",
 };
 
@@ -153,11 +154,3 @@ r.delete("/:name/:id", requireAuth, requireRole("admin", "developer"), async (re
 });
 
 export default r;
-
-r.get("/public/forms", async (_req, res) => {
-  const { rows } = await q("SELECT id, data FROM items WHERE collection='forms'");
-  res.json({ items: rows.map(r => ({
-    id: r.id, title: r.data.title, isOpen: r.data.isOpen,
-    isRecruitment: r.data.isRecruitment, version: r.data.version, fields: r.data.fields,
-  })) });
-});
