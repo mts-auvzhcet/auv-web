@@ -28,6 +28,7 @@ const EMPTY_DB = {
   recruitments: [],
   advisory: [],
   faculty: [],
+  workshops: [],
   forms: [],
   audit: [],
   infoMd: "",
@@ -189,7 +190,7 @@ export function logAction(/* user, role, action, target */) {
 // ---------------------------------------------------------------------------
 // Generic collections
 // ---------------------------------------------------------------------------
-const COLLECTIONS = ["events", "projects", "vehicles", "announcements", "recruitments", "advisory", "faculty", "forms"];
+const COLLECTIONS = ["events", "projects", "vehicles", "announcements", "recruitments", "advisory", "faculty", "forms", "workshops"];
 
 export function getCollection(name) {
   return cache[name] || [];

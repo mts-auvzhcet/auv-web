@@ -58,6 +58,20 @@ export function Field({ label, value, onChange, type = "text", textarea, placeho
           placeholder={placeholder}
           className="bg-black/40 border border-zinc-800 rounded-lg px-3 py-2.5 text-sm text-white outline-none focus:border-sky-500/60 transition-colors placeholder:text-zinc-600 resize-y"
         />
+      ) : type === "toggle" ? (
+        <button
+          type="button"
+          onClick={() => onChange(!value)}
+          className={`relative w-12 h-6 rounded-full transition-colors shrink-0 self-start ${
+            value ? "bg-sky-500" : "bg-zinc-800"
+          }`}
+        >
+          <span
+            className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white transition-transform ${
+              value ? "translate-x-6" : "translate-x-0"
+            }`}
+          />
+        </button>
       ) : type === "file" ? (
         <div className="flex items-center gap-4">
           {value && typeof value === 'string' && (
@@ -165,7 +179,7 @@ export function ListSection({ title, count, children }) {
   );
 }
 
-export function ListRow({ image, title, subtitle, onEdit, onDelete }) {
+export function ListRow({ image, title, subtitle, badge, onEdit, onDelete }) {
   return (
     <div className="flex items-center gap-3 bg-black/30 border border-zinc-900 rounded-xl p-3 hover:border-zinc-800 transition-colors">
       {image ? (
@@ -176,7 +190,10 @@ export function ListRow({ image, title, subtitle, onEdit, onDelete }) {
         />
       ) : null}
       <div className="min-w-0 flex-1">
-        <p className="text-sm text-white font-medium truncate">{title}</p>
+        <div className="flex items-center gap-2">
+          <p className="text-sm text-white font-medium truncate">{title}</p>
+          {badge}
+        </div>
         {subtitle && <p className="text-xs text-zinc-500 font-light truncate">{subtitle}</p>}
       </div>
       <div className="flex gap-1.5 shrink-0">

@@ -27,6 +27,7 @@ export default function Navbar() {
     { name: 'Leadership', path: '/leadership' },
     { name: 'Project', path: '/projects' },
     { name: 'Event', path: '/events' },
+    { name: 'Workshop', path: '/workshops' },
     { name: 'Recruitment', path: '/recruitment' },
   ];
 

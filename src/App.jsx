@@ -9,6 +9,8 @@ import Events from './pages/Events';
 import Benefactors from './pages/Benefactors';
 import Recruitment from './pages/Recruitment';
 import CustomForm from './pages/CustomForm';
+import Workshops from './pages/Workshops';
+import WorkshopDetail from './pages/WorkshopDetail';
 import Login from './pages/Login';
 import DevDashboard from './pages/dev/DevDashboard';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -35,6 +37,8 @@ export default function App() {
               <Route path="/benefactors" element={<Benefactors />} />
               <Route path="/recruitment" element={<Recruitment />} />
               <Route path="/forms/:formId" element={<CustomForm />} />
+              <Route path="/workshops" element={<Workshops />} />
+              <Route path="/workshops/:id" element={<WorkshopDetail />} />
               <Route path="/login" element={<Login />} />
               <Route
                 path="/dev/dashboard"

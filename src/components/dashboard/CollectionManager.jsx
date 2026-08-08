@@ -15,7 +15,7 @@ export default function CollectionManager({ config }) {
 
   const emptyForm = () =>
     config.fields.reduce(
-      (acc, f) => ({ ...acc, [f.key]: f.type === "files" ? [] : "" }),
+      (acc, f) => ({ ...acc, [f.key]: f.type === "files" ? [] : f.type === "toggle" ? false : "" }),
       {}
     );
 
@@ -29,6 +29,8 @@ export default function CollectionManager({ config }) {
     config.fields.forEach((f) => {
       if (f.type === "files") {
         next[f.key] = Array.isArray(item[f.key]) ? item[f.key] : [];
+      } else if (f.type === "toggle") {
+        next[f.key] = !!item[f.key];
       } else {
         next[f.key] = item[f.key] || "";
       }
@@ -104,6 +106,19 @@ export default function CollectionManager({ config }) {
             image={config.imageKey ? item[config.imageKey] : null}
             title={item[config.titleKey] || "Untitled"}
             subtitle={config.subtitleKey ? item[config.subtitleKey] : null}
+            badge={
+              config.badgeKey ? (
+                <span
+                  className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shrink-0 ${
+                    item[config.badgeKey]
+                      ? "bg-green-500/10 text-green-400 border border-green-500/20"
+                      : "bg-zinc-800 text-zinc-500 border border-zinc-700"
+                  }`}
+                >
+                  {item[config.badgeKey] ? "Active" : "Inactive"}
+                </span>
+              ) : null
+            }
             onEdit={() => startEdit(item)}
             onDelete={() => remove(item.id)}
           />

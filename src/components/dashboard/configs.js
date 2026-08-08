@@ -105,3 +105,26 @@ export const advisoryConfig = {
 };
 
 
+
+export const workshopsConfig = {
+  name: "workshops",
+  label: "Workshop",
+  titleKey: "title",
+  subtitleKey: "year",
+  imageKey: "imageBase64",
+  badgeKey: "isActive",
+  fields: [
+    { key: "title", label: "Workshop Title", required: true },
+    { key: "year", label: "Year", placeholder: "e.g. 2026" },
+    { key: "theme", label: "Short Tagline / Theme" },
+    { key: "desc", label: "About This Workshop", textarea: true },
+    { key: "highlights", label: "Key Highlights (one per line)", textarea: true, placeholder: "One highlight per line" },
+    { key: "imageBase64", label: "Cover Image", type: "file" },
+    { key: "images", label: "Highlight Gallery Images (upload multiple)", type: "files" },
+    { key: "isActive", label: "Registrations Open? (toggle ON only while this workshop is currently accepting registrations — turning it OFF hides venue/fee/certificate/registration details from the public page)", type: "toggle" },
+    { key: "venue", label: "Venue (only shown while Active)" },
+    { key: "registrationFee", label: "Registration Fee (only shown while Active)", placeholder: "e.g. Rs. 200 per head" },
+    { key: "certificates", label: "Certificate Details (only shown while Active)", textarea: true },
+    { key: "registrationLink", label: "Registration Link (only shown while Active — also used to generate the QR code)" },
+  ],
+};
