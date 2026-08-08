@@ -313,10 +313,8 @@ export default function Home() {
   return (
     <div className="min-h-screen text-zinc-900 relative transition-all duration-350 overflow-hidden">
 
-      {/* Fixed gradient background layer — stays pinned to the viewport as
-          you scroll, so the color blend always shows fully rather than
-          being stretched thin across the entire (much taller) page. */}
-      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-[#f0f9ff] via-[#bae6fd] via-[#0284c7] via-[#0c4a6e] via-[#0f172a] via-[#111827] to-[#020617]" />
+      {/* Fixed background gradient */}
+      <div className="fixed inset-0 -z-10 bg-gradient-to-b from-[#0f172a] via-[#090d16] to-[#020617]" />
       
       {/* Gravity Stars Background effect (Pointer events none so it doesn't block clicks, but reacts to window mouse events) */}
       <GravityStarsBackground className="fixed inset-0 w-full h-full z-[1] text-white opacity-60 pointer-events-none" />
@@ -773,7 +771,7 @@ export default function Home() {
           </p>
           <Link
             to="/recruitment"
-            className="px-6 py-3 rounded-full text-xs font-semibold bg-sky-500 hover:bg-sky-400 text-white font-space uppercase tracking-wider transition-colors duration-200"
+            className="px-6 py-3 rounded-full text-xs font-semibold bg-sky-500 hover:bg-sky-400 text-white font-space uppercase tracking-wider transition-colors duration-200 hover-spring hover:shadow-[0_0_15px_rgba(14,165,233,0.3)]"
           >
             Apply Now
           </Link>

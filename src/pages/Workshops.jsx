@@ -30,7 +30,7 @@ export default function Workshops() {
 
   if (!isHydrated()) {
     return (
-      <div className="bg-gradient-to-b from-[#0f172a] via-[#18181b] to-[#111827] text-white min-h-screen flex items-center justify-center">
+      <div className="bg-gradient-to-b from-[#0f172a] via-[#090d16] to-[#020617] text-white min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="w-8 h-8 border-2 border-sky-500/30 border-t-sky-400 rounded-full animate-spin" />
           <span className="text-xs text-zinc-500 font-space uppercase tracking-wider">Loading workshops...</span>
@@ -40,7 +40,7 @@ export default function Workshops() {
   }
 
   return (
-    <div className="bg-gradient-to-b from-[#0f172a] via-[#18181b] to-[#111827] text-white pt-24 pb-20 min-h-screen font-poppins relative selection:bg-blue-500/30">
+    <div className="bg-gradient-to-b from-[#0f172a] via-[#090d16] to-[#020617] text-white pt-24 pb-20 min-h-screen font-poppins relative selection:bg-blue-500/30">
       <HexagonBackground className="fixed inset-0 w-full h-full opacity-30" />
       
       <div className="max-w-6xl mx-auto px-6 md:px-8 relative z-10 pointer-events-none">

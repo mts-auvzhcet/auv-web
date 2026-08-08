@@ -54,7 +54,7 @@ export default function WorkshopDetail() {
     : null;
 
   return (
-    <div className="bg-gradient-to-b from-[#0f172a] via-[#18181b] to-[#111827] text-white pt-24 pb-20 min-h-screen font-poppins">
+    <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-sky-950/40 via-[#090d16] to-[#020617] text-white pt-24 pb-20 min-h-screen font-poppins selection:bg-cyan-500/30">
       <div className="max-w-4xl mx-auto px-6 md:px-8">
         <Link to="/workshops" className="inline-flex items-center gap-1.5 text-zinc-500 hover:text-white text-xs font-space uppercase tracking-wider mb-8 transition-colors">
           <ArrowLeft size={13} /> All Workshops
@@ -81,7 +81,7 @@ export default function WorkshopDetail() {
 
         {/* Registration block — only when active */}
         {workshop.isActive && (
-          <div className="bg-zinc-950/60 border border-sky-500/20 rounded-2xl p-6 md:p-8 mb-10 grid grid-cols-1 md:grid-cols-[auto_1fr] gap-8 items-center">
+          <div className="bg-zinc-950/60 border border-sky-500/20 rounded-2xl p-6 md:p-8 mb-10 grid grid-cols-1 md:grid-cols-[auto_1fr] gap-8 items-center hover-spring hover:border-cyan-500/40 backdrop-blur-md hover:shadow-[0_0_30px_rgba(14,165,233,0.15)] transition-shadow duration-500">
             {qrUrl && (
               <div className="flex flex-col items-center gap-2 shrink-0">
                 <div className="bg-white p-3 rounded-xl">
@@ -125,7 +125,7 @@ export default function WorkshopDetail() {
                   href={workshop.registrationLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-xs uppercase tracking-wider py-3 px-6 rounded-xl transition-colors mt-2 self-start"
+                  className="inline-flex items-center justify-center gap-2 bg-sky-500 hover:bg-sky-400 text-white font-bold text-xs uppercase tracking-wider py-3 px-6 rounded-xl transition-colors mt-2 self-start hover-spring hover:shadow-[0_0_15px_rgba(14,165,233,0.4)]"
                 >
                   Register Now <ExternalLink size={13} />
                 </a>

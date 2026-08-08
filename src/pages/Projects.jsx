@@ -79,7 +79,7 @@ export default function Projects() {
 
   if (!isHydrated()) {
     return (
-      <div className="bg-gradient-to-b from-[#0c4a6e] via-[#0f172a] to-[#020617] text-white min-h-screen flex items-center justify-center">
+      <div className="bg-gradient-to-b from-[#0f172a] via-[#090d16] to-[#020617] text-white min-h-screen flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
           <div className="w-8 h-8 border-2 border-sky-200/30 border-t-white rounded-full animate-spin" />
           <span className="text-xs text-sky-100/70 font-space uppercase tracking-wider">Loading projects...</span>
@@ -89,7 +89,7 @@ export default function Projects() {
   }
 
   return (
-    <div className="bg-gradient-to-b from-[#0c4a6e] via-[#0f172a] to-[#020617] text-white pt-24 pb-20 min-h-screen font-poppins relative selection:bg-blue-500/30">
+    <div className="bg-gradient-to-b from-[#0f172a] via-[#090d16] to-[#020617] text-white pt-24 pb-20 min-h-screen font-poppins relative selection:bg-blue-500/30">
       <HexagonBackground className="fixed inset-0 w-full h-full opacity-30" />
       
       <div className="max-w-6xl mx-auto px-6 md:px-8 relative z-10 pointer-events-none">
@@ -116,12 +116,12 @@ export default function Projects() {
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
+                transition={{ duration: 0.6, delay: idx * 0.15 }}
                 key={idx}
                 className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
               >
                 {/* Visual Column */}
-                <div className={`lg:col-span-6 w-full rounded-2xl overflow-hidden border border-zinc-800 shadow-2xl relative bg-zinc-950/40 aspect-video ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
+                <div className={`lg:col-span-6 w-full rounded-2xl overflow-hidden border border-zinc-800 shadow-2xl relative bg-zinc-950/40 aspect-video hover-spring hover:border-cyan-500/30 ${isEven ? 'lg:order-1' : 'lg:order-2'}`}>
                   <video
                     src={project.video}
                     autoPlay
@@ -169,7 +169,7 @@ export default function Projects() {
                   <div className="mt-4">
                     <button
                       onClick={() => setSelectedProject(project)}
-                      className="px-5 py-2.5 rounded-full text-xs font-semibold bg-sky-500/10 hover:bg-sky-500 border border-sky-400/30 hover:text-black font-space tracking-wider uppercase transition-all duration-300 flex items-center gap-1.5 group"
+                      className="px-5 py-2.5 rounded-full text-xs font-semibold bg-sky-500/10 hover:bg-sky-500 border border-sky-400/30 hover:text-black font-space tracking-wider uppercase transition-colors duration-300 flex items-center gap-1.5 group hover-spring"
                     >
                       Explore Details
                       <ArrowRight size={10} className="group-hover:translate-x-0.5 transition-transform duration-200" />

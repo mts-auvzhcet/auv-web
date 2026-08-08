@@ -350,7 +350,7 @@ export default function Leadership() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: (idx % 5) * 0.1 }}
-              className="flip-card w-full aspect-[0.72] max-w-[210px] mx-auto group"
+              className="flip-card w-full aspect-[0.72] max-w-[210px] mx-auto group hover-spring"
             >
               <div className="flip-card-inner w-full h-full">
                 
@@ -374,7 +374,7 @@ export default function Leadership() {
                 </div>
 
                 {/* CARD BACK */}
-                <div className="flip-card-back bg-zinc-900 border border-blue-900/60 shadow-[0_0_15px_rgba(59,130,246,0.1)] flex flex-col items-center justify-between p-4 text-center">
+                <div className="flip-card-back bg-zinc-900 border border-cyan-500/30 shadow-[0_0_20px_rgba(14,165,233,0.15)] flex flex-col items-center justify-between p-4 text-center">
                   <div className="w-full">
                     <div className="text-[9px] font-mono tracking-widest text-blue-400 uppercase font-semibold border-b border-zinc-800 pb-1.5 mb-3">
                       {stud.subteam} Team

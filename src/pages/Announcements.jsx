@@ -22,7 +22,7 @@ export default function Announcements() {
   const [selected, setSelected] = useState(null);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#0f172a] via-[#0c4a6e] to-[#020617] pt-28 pb-20 px-4 sm:px-6">
+    <div className="min-h-screen bg-gradient-to-b from-[#0f172a] via-[#090d16] to-[#020617] pt-28 pb-20 px-4 sm:px-6">
       <div className="max-w-4xl mx-auto">
         <AnimatePresence mode="wait">
           {selected ? (

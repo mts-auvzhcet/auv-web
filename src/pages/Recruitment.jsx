@@ -58,7 +58,7 @@ export default function Recruitment() {
   };
 
   return (
-    <div className="bg-gradient-to-b from-[#0c4a6e] via-[#0f172a] to-[#020617] text-white pt-28 pb-20 min-h-screen font-poppins relative selection:bg-blue-500/30 overflow-hidden">
+    <div className="bg-gradient-to-b from-[#0f172a] via-[#090d16] to-[#020617] text-white pt-28 pb-20 min-h-screen font-poppins relative selection:bg-blue-500/30 overflow-hidden">
       <HexagonBackground className="fixed inset-0 w-full h-full opacity-30" />
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-[1]"></div>
 

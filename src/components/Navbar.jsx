@@ -58,7 +58,7 @@ export default function Navbar() {
               key={idx}
               to={link.path}
               className={`flex items-center font-apple hover:text-white hover:scale-105 transition-all duration-300 whitespace-nowrap ${
-                isActive(link.path) ? 'text-sky-400 font-medium' : 'text-[#ffffffcc]'
+                isActive(link.path) ? 'text-white font-bold drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]' : 'text-[#ffffffcc]'
               }`}
             >
               {link.name}
@@ -150,7 +150,7 @@ export default function Navbar() {
               to={link.path}
               onClick={() => setIsOpen(false)}
               className={`w-1/2 text-center text-base transition-colors ${
-                isActive(link.path) ? 'text-sky-400' : 'text-zinc-400 hover:text-white'
+                isActive(link.path) ? 'text-white font-bold drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]' : 'text-zinc-400 hover:text-white'
               }`}
             >
               <div>{link.name}</div>

@@ -115,11 +115,11 @@ export default function CustomForm() {
   }
 
   return (
-    <div className="min-h-screen bg-black pt-32 pb-20 px-6">
+    <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-zinc-900 via-[#090d16] to-black pt-32 pb-20 px-6 relative selection:bg-blue-500/30">
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        className="max-w-xl mx-auto bg-zinc-950/60 border border-zinc-900 rounded-3xl p-8 md:p-10"
+        className="max-w-xl mx-auto bg-zinc-950/60 border border-zinc-800 rounded-3xl p-8 md:p-10 shadow-2xl backdrop-blur-md hover:shadow-[0_0_30px_rgba(14,165,233,0.15)] transition-shadow duration-500"
       >
         <h1 className="text-2xl font-bold text-white mb-1">{form.title}</h1>
         <p className="text-zinc-500 text-xs mb-8">Fields marked * are required.</p>
@@ -210,7 +210,7 @@ export default function CustomForm() {
           <button
             type="submit"
             disabled={loading || !!uploadingField}
-            className="flex items-center justify-center gap-2 bg-sky-500 hover:bg-sky-400 disabled:opacity-50 text-white py-3.5 rounded-2xl text-sm font-bold transition-all"
+            className="flex items-center justify-center gap-2 bg-sky-500 hover:bg-sky-400 disabled:opacity-50 text-white py-3.5 rounded-2xl text-sm font-bold transition-all hover-spring hover:shadow-[0_0_15px_rgba(14,165,233,0.4)]"
           >
             <Send size={16} /> {loading ? 'Submitting...' : 'Submit'}
           </button>
