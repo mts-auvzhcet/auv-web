@@ -5,6 +5,8 @@ import { Send, CheckCircle, Image as ImageIcon, AlertCircle } from 'lucide-react
 import { addItem, getCollection, isHydrated } from '../lib/store';
 import { uploadImage } from '../lib/cloudinary';
 import { useStore } from '../lib/useStore';
+import { createSlug } from '../lib/utils';
+import { GravityStarsBackground } from '@/components/animate-ui/components/backgrounds/gravity-stars';
 
 // Renders any form created in Dashboard → Forms → Custom Builders, dynamically
 // from its `fields` definition. This is what was missing before — form
@@ -16,7 +18,7 @@ export default function CustomForm() {
   const { formId } = useParams();
 
   const forms = getCollection('forms');
-  const form = forms.find((f) => f.id === formId && !f.isRecruitment);
+  const form = forms.find((f) => (f.id === formId || createSlug(f.title) === formId) && !f.isRecruitment);
   const loadingDb = !isHydrated();
 
   const [formData, setFormData] = useState({});
@@ -115,7 +117,8 @@ export default function CustomForm() {
   }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-zinc-900 via-[#090d16] to-black pt-32 pb-20 px-6 relative selection:bg-blue-500/30">
+    <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-zinc-900 via-[#090d16] to-black pt-32 pb-20 px-6 relative selection:bg-blue-500/30 overflow-hidden">
+      <GravityStarsBackground className="fixed inset-0 w-full h-full opacity-50" />
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}

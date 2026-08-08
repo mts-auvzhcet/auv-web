@@ -6,6 +6,7 @@ import { getCollection, addItem } from '../lib/store';
 import { uploadImage } from '../lib/cloudinary';
 import SplitText from '../components/SplitText';
 import { useStore } from '../lib/useStore';
+import { createSlug } from '../lib/utils';
 import { GravityStarsBackground } from '@/components/animate-ui/components/backgrounds/gravity-stars';
 
 function OpenFormCard({ form }) {
@@ -749,7 +750,7 @@ export default function Home() {
           {openCustomForms.map((form) => (
             <Link
               key={form.id}
-              to={`/forms/${form.id}`}
+              to={`/forms/${createSlug(form.title) || form.id}`}
               className="w-full flex items-center justify-between p-5 text-left text-zinc-350 hover:text-white font-space font-bold text-sm uppercase tracking-wider border-b border-zinc-900 last:border-0 transition-colors"
             >
               <span>{form.title}</span>

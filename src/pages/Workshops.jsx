@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Calendar, ArrowRight, GraduationCap } from 'lucide-react';
+import { Calendar, ArrowRight } from 'lucide-react';
 import { getCollection, isHydrated } from '../lib/store';
 import { useStore } from '../lib/useStore';
+import { createSlug } from '../lib/utils';
 import { HexagonBackground } from '@/components/animate-ui/components/backgrounds/hexagon';
 
 export default function Workshops() {
@@ -69,7 +70,7 @@ export default function Workshops() {
                 transition={{ duration: 0.5, delay: idx * 0.05 }}
               >
                 <Link
-                  to={`/workshops/${w.id}`}
+                  to={`/workshops/${createSlug(w.title) || w.id}`}
                   className="group block bg-zinc-950/60 border border-zinc-900 hover:border-sky-500/40 rounded-2xl overflow-hidden transition-all"
                 >
                   <div className="aspect-video w-full overflow-hidden relative">

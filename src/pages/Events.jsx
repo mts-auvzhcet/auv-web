@@ -136,7 +136,7 @@ export default function Events() {
     <div className="bg-gradient-to-b from-[#0f172a] via-[#090d16] to-[#020617] text-white pt-24 pb-20 min-h-screen font-poppins relative selection:bg-blue-500/30">
       <HexagonBackground className="fixed inset-0 w-full h-full opacity-30" />
       
-      <div className="max-w-4xl mx-auto px-6 md:px-8 relative z-10 pointer-events-none">
+      <div className="max-w-6xl mx-auto px-6 md:px-8 relative z-10 pointer-events-none">
         
         {/* Header Section */}
         <div className="flex flex-col mb-16 border-b border-white/10 pb-6 pointer-events-auto">

@@ -4,13 +4,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, MapPin, Award, Ticket, QrCode, ExternalLink, ArrowLeft, Sparkles, X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getCollection, isHydrated } from '../lib/store';
 import { useStore } from '../lib/useStore';
+import { createSlug } from '../lib/utils';
+import { GravityStarsBackground } from '@/components/animate-ui/components/backgrounds/gravity-stars';
 
 export default function WorkshopDetail() {
   useStore();
   const { id } = useParams();
   const [lightboxIndex, setLightboxIndex] = useState(null);
 
-  const raw = getCollection('workshops').find((w) => w.id === id);
+  const raw = getCollection('workshops').find((w) => w.id === id || createSlug(w.title) === id);
 
   if (!isHydrated()) {
     return (
@@ -54,8 +56,9 @@ export default function WorkshopDetail() {
     : null;
 
   return (
-    <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-sky-950/40 via-[#090d16] to-[#020617] text-white pt-24 pb-20 min-h-screen font-poppins selection:bg-cyan-500/30">
-      <div className="max-w-4xl mx-auto px-6 md:px-8">
+    <div className="bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-sky-950/40 via-[#090d16] to-[#020617] text-white pt-24 pb-20 min-h-screen font-poppins selection:bg-cyan-500/30 relative overflow-hidden">
+      <GravityStarsBackground className="fixed inset-0 w-full h-full opacity-50" />
+      <div className="max-w-4xl mx-auto px-6 md:px-8 relative z-10">
         <Link to="/workshops" className="inline-flex items-center gap-1.5 text-zinc-500 hover:text-white text-xs font-space uppercase tracking-wider mb-8 transition-colors">
           <ArrowLeft size={13} /> All Workshops
         </Link>
